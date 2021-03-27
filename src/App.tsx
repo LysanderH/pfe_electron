@@ -3,7 +3,7 @@ import { MemoryRouter as Router, Switch, Route } from 'react-router-dom';
 import Menu from './pages/Menu';
 import Login from './pages/Login';
 import Register from './pages/Register';
-import './style.css';
+import './styles/app.global.scss';
 
 export default function App() {
   return (
