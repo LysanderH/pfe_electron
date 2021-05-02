@@ -1,0 +1,20 @@
+@mixin roboto($size: false, $colour: false, $weight: false, $lh: false) {
+  font-family: 'Roboto', sans-serif;
+
+  @if $size {
+    font-size: $size;
+    font-size: calculateRem($size);
+  }
+
+  @if $colour {
+    color: $colour;
+  }
+
+  @if $weight {
+    font-weight: $weight;
+  }
+
+  @if $lh {
+    line-height: $lh;
+  }
+}

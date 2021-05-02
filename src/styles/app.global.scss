@@ -1,11 +1,65 @@
+$root-font-size: 16px;
+@import './helpers/calculation-helpers-rem-pc';
+@import './elements/fonts';
 @import './helpers/sr-only';
+@import './helpers/font-mixins';
 @import './helpers/reset';
+
+$text-color: #333;
+$text-white: #fff;
+$input-background: #E4E4E4;
+$btn: #05A081;
+$btn-hover: #03745d;
 
 // TODO remove
 html {
   background: white;
 }
 
+p,
+a,
+span,
+button,
+h1,
+h2,
+h3,
+h4,
+h5,
+li,
+label {
+  @include roboto(16px, $text-color);
+}
+
 .sr-only {
   @include sr-only;
+}
+
+input {
+  @include roboto(16px, $text-color);
+
+  background: $input-background;
+  border: none;
+  border-radius: 5px;
+  padding: .8em;
+
+}
+
+.label {
+  @include roboto(16px, $text-color);
+  margin: 16px 0 8px 0;
+}
+
+.btn {
+  background: $btn;
+  padding: .4em .6em;
+  border-radius: 5px;
+  @include roboto(16px, $text-white);
+  transition: background .2s ease-in-out;
+  align-self: flex-end;
+  margin-top: 1rem;
+  cursor: pointer;
+
+  &:hover {
+    background: $btn-hover;
+  }
 }

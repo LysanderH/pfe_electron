@@ -1,0 +1,8 @@
+// clearfix
+@mixin clearfix($side) {
+  &:after {
+    content: "";
+    display: table;
+    clear: $side;
+  }
+}

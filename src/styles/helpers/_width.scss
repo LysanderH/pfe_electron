@@ -1,0 +1,7 @@
+// Width
+@mixin width($target, $container, $max-width:null){
+  width: calc-percent($target, $container);
+  @if($max-width){
+    max-width: $max-width;
+  }
+}

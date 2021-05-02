@@ -1,0 +1,34 @@
+// font size calculation in rem
+@function calculateRem($size) {
+  $remSize: $size / $root-font-size;
+  @return $remSize * 1rem;
+}
+
+@function calculatePercent($size, $parent-size) {
+  $percentSize: 100 / $parent-size * $size;
+  @return $percentSize * 1%;
+}
+
+// clearfix
+@mixin clearfix($side) {
+  &:after {
+    content: "";
+    display: table;
+    clear: $side;
+  }
+}
+
+// margin-auto
+@mixin margin-auto {
+  margin: {
+    left: auto;
+    right: auto;
+  }
+}
+
+// Pseudo elements
+@mixin pseudo($display: block, $pos: absolute, $content: '') {
+  content: $content;
+  display: $display;
+  position: $pos;
+}
