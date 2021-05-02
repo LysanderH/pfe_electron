@@ -1,14 +1,27 @@
 .login {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  grid-template-areas: 'form img' 'nav img';
+  grid-template-areas: 'heading img' 'form img' 'nav img';
   height: 100vh;
   width: 100vw;
+
+  &__heading {
+    grid-area: heading;
+  }
 
   &__form {
     grid-area: form;
     display: flex;
     flex-direction: column;
+  }
+
+  &__label {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__password_wrapper {
+    display: flex;
   }
 
   &__figure {
