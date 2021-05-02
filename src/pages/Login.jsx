@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { Redirect } from 'react-router';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 import sideImg from '../../assets/img/login.jpg';
 import styles from '../styles/pages/Login.scss';
 import Menu from './Menu';
 
-export default function Login(props) {
+export default function Login() {
   const [passwordShown, setPasswordShown] = useState(false);
 
   const showPassword = () => {
@@ -15,12 +15,34 @@ export default function Login(props) {
   const submitLogin = (e) => {
     e.preventDefault();
 
-    return props.history.push('/register');
-  };
+    const email = e.target.email.value;
+    // TODO check email and set error
+
+    const password = e.target.password.value;
+    // TODO check password and set error
+
+    axios.get('http://api.localhost/sanctum/csrf-cookie').then((response) => {
+      axios
+          .post('http://api.localhost/api/auth/login', {
+            email,
+            password,
+          })
+          .then((user) => {
+            console.log(user);
+          })
+          .catch((error) => {
+            console.log(error);
+            });
+        }).catch((error) => {
+          console.log(error);
+        });
+    };
 
   return (
     <section className={styles.login}>
-      <h2 aria-level="2">Se connecter</h2>
+      <h2 aria-level="2" className={styles.login__heading}>
+        Se connecter
+      </h2>
       <Menu />
       <form
         action="/"
@@ -30,20 +52,28 @@ export default function Login(props) {
         }}
         className={styles.login__form}
       >
-        <label htmlFor="email" className="label">
+        <label htmlFor="email" className={styles.login__label}>
           <span>Email</span>
-          <input type="email" id="email" placeholder="exemple@mail.com" />
-        </label>
-        <label htmlFor="password">
-          <span>Password</span>
           <input
-            type={passwordShown ? 'text' : 'password'}
-            id="password"
-            placeholder="Mot de passe"
-          />
-          <button type="button" onClick={showPassword}>
-            Afficher le mot de passe
-          </button>
+            type="email"
+            id="email"
+            placeholder="exemple@mail.com"
+            name="email"
+            />
+        </label>
+        <label htmlFor="password" className={styles.login__label}>
+          <span>Password</span>
+          <div className={styles.login__password_wrapper}>
+            <input
+              type={passwordShown ? 'text' : 'password'}
+              id="password"
+              name="password"
+              placeholder="Mot de passe"
+            />
+            <button type="button" onClick={showPassword}>
+              <span className="sr-only">Afficher le mot de passe</span>
+            </button>
+          </div>
         </label>
         <button type="submit" className="btn btn--submit">
           Se connecter
