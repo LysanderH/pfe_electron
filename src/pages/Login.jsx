@@ -23,8 +23,10 @@ export default function Login() {
     const password = e.target.password.value;
     // TODO check password and set error
 
-    axios.get('http://api.localhost/sanctum/csrf-cookie').then((response) => {
-      axios
+    axios
+      .get('http://api.localhost/sanctum/csrf-cookie')
+      .then((response) => {
+        axios
           .post('http://api.localhost/api/auth/login', {
             email,
             password,
@@ -34,11 +36,12 @@ export default function Login() {
           })
           .catch((error) => {
             console.log(error);
-            });
-        }).catch((error) => {
-          console.log(error);
-        });
-    };
+          });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   return (
     <section className={styles.login}>
@@ -47,7 +50,9 @@ export default function Login() {
       </h2>
       <div className={styles.header}>
         <span className={styles.header__heading}>Chess Teaching Tool</span>
-        <a href="/register" className={`${styles.header__btn} btn`}>Créer un compte</a>
+        <a href="/register" className={`${styles.header__btn} btn`}>
+          Créer un compte
+        </a>
       </div>
       <form
         action="/"
@@ -64,7 +69,7 @@ export default function Login() {
             id="email"
             placeholder="exemple@mail.com"
             name="email"
-            />
+          />
         </label>
         <label htmlFor="password" className={styles.login__label}>
           <span className="label">Password</span>
@@ -78,30 +83,53 @@ export default function Login() {
             />
             <button type="button" onClick={showPassword}>
               <span className="sr-only">Afficher le mot de passe</span>
-              {! passwordShown ? <svg className={styles.login__toggl} version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
-	              viewBox="0 0 511.999 511.999" fill="#000000" enableBackground="new 0 0 511.999 511.999">
-              <g>
-                <g>
-                  <path d="M508.745,246.041c-4.574-6.257-113.557-153.206-252.748-153.206S7.818,239.784,3.249,246.035
+              {!passwordShown ? (
+                <svg
+                  className={styles.login__toggl}
+                  version="1.1"
+                  id="Capa_1"
+                  xmlns="http://www.w3.org/2000/svg"
+                  x="0px"
+                  y="0px"
+                  viewBox="0 0 511.999 511.999"
+                  fill="#000000"
+                  enableBackground="new 0 0 511.999 511.999"
+                >
+                  <g>
+                    <g>
+                      <path
+                        d="M508.745,246.041c-4.574-6.257-113.557-153.206-252.748-153.206S7.818,239.784,3.249,246.035
                     c-4.332,5.936-4.332,13.987,0,19.923c4.569,6.257,113.557,153.206,252.748,153.206s248.174-146.95,252.748-153.201
                     C513.083,260.028,513.083,251.971,508.745,246.041z M255.997,385.406c-102.529,0-191.33-97.533-217.617-129.418
                     c26.253-31.913,114.868-129.395,217.617-129.395c102.524,0,191.319,97.516,217.617,129.418
-                    C447.361,287.923,358.746,385.406,255.997,385.406z"/>
-                </g>
-              </g>
-              <g>
-                <g>
-                  <path d="M255.997,154.725c-55.842,0-101.275,45.433-101.275,101.275s45.433,101.275,101.275,101.275
-                    s101.275-45.433,101.275-101.275S311.839,154.725,255.997,154.725z M255.997,323.516c-37.23,0-67.516-30.287-67.516-67.516
-                    s30.287-67.516,67.516-67.516s67.516,30.287,67.516,67.516S293.227,323.516,255.997,323.516z"/>
-                </g>
-              </g>
-              </svg> :
-              <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
-                  viewBox="0 0 477.871 477.871" className={styles.login__toggl}>
-                <g>
+                    C447.361,287.923,358.746,385.406,255.997,385.406z"
+                      />
+                    </g>
+                  </g>
                   <g>
-                    <path d="M474.609,228.901c-29.006-38.002-63.843-71.175-103.219-98.287l67.345-67.345c6.78-6.548,6.968-17.352,0.42-24.132
+                    <g>
+                      <path
+                        d="M255.997,154.725c-55.842,0-101.275,45.433-101.275,101.275s45.433,101.275,101.275,101.275
+                    s101.275-45.433,101.275-101.275S311.839,154.725,255.997,154.725z M255.997,323.516c-37.23,0-67.516-30.287-67.516-67.516
+                    s30.287-67.516,67.516-67.516s67.516,30.287,67.516,67.516S293.227,323.516,255.997,323.516z"
+                      />
+                    </g>
+                  </g>
+                </svg>
+              ) : (
+                <svg
+                  version="1.1"
+                  id="Capa_1"
+                  xmlns="http://www.w3.org/2000/svg"
+                  x="0px"
+                  y="0px"
+                  viewBox="0 0 477.871 477.871"
+                  className={styles.login__toggl}
+                >
+                  <g>
+                    <g>
+                      <path
+                        d="M474.609,228.901c-29.006-38.002-63.843-71.175-103.219-98.287l67.345-67.345c6.78-6.548,6.968-17.352,0.42-24.132
                       c-6.548-6.78-17.352-6.968-24.132-0.42c-0.142,0.137-0.282,0.277-0.42,0.42l-73.574,73.506
                       c-31.317-17.236-66.353-26.607-102.093-27.307C109.229,85.336,7.529,223.03,3.262,228.9c-4.349,5.983-4.349,14.087,0,20.07
                       c29.006,38.002,63.843,71.175,103.219,98.287l-67.345,67.345c-6.78,6.548-6.968,17.352-0.42,24.132
@@ -114,11 +142,12 @@ export default function Login() {
                       M192.856,260.866c-3.34-6.83-5.091-14.328-5.12-21.931c0-28.277,22.923-51.2,51.2-51.2c7.603,0.029,15.101,1.78,21.931,5.12
                       L192.856,260.866z M238.936,358.402c-26.609-0.538-52.769-6.949-76.612-18.773l29.628-29.628
                       c39.2,26.025,92.076,15.345,118.101-23.855c18.958-28.555,18.958-65.691,0-94.246l36.523-36.523
-                      c34.767,23.156,65.931,51.312,92.484,83.558C413.937,269.366,332.461,358.402,238.936,358.402z"/>
+                      c34.767,23.156,65.931,51.312,92.484,83.558C413.937,269.366,332.461,358.402,238.936,358.402z"
+                      />
+                    </g>
                   </g>
-                </g>
-              </svg>
-      }
+                </svg>
+              )}
             </button>
           </div>
         </label>
@@ -128,8 +157,12 @@ export default function Login() {
       </form>
       <nav className={styles.login__nav}>
         <h3 className="sr-only">Navigation de connexion</h3>
-        <Link to="/register" className={styles.login__item}>Je n’ai pas de compte</Link>
-        <Link to="/reset-password" className={styles.login__item}>J’ai ouvlié mon mot de passe</Link>
+        <Link to="/register" className={styles.login__item}>
+          Je n’ai pas de compte
+        </Link>
+        <Link to="/reset-password" className={styles.login__item}>
+          J’ai ouvlié mon mot de passe
+        </Link>
       </nav>
       <figure className={styles.login__figure}>
         <img src={sideImg} alt="" className={styles.login__img} />

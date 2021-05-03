@@ -1,0 +1,93 @@
+.register {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-areas: 'header header''heading img''form img''nav img';
+  height: 100vh;
+  width: 100vw;
+
+  &__heading {
+    grid-area: heading;
+    font-family: 'Roboto', sans-serif;
+    font-size: 48px;
+    font-weight: 900;
+    max-width: 500px;
+    justify-self: center;
+    width: 100%;
+    margin: 32px 0;
+  }
+
+  &__form {
+    grid-area: form;
+    width: 100%;
+    max-width: 500px;
+    justify-self: center;
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__label {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__password_wrapper {
+    display: flex;
+    background-color: #E4E4E4;
+    border-radius: 5px;
+  }
+
+  &__pwd_input {
+    width: 90%;
+  }
+
+  &__toggl {
+    min-width: 20px;
+    // min-height: 8px;
+    padding: 5px;
+    background-color: #E4E4E4;
+    cursor: pointer;
+  }
+
+  &__item {
+    margin: .5rem 0;
+  }
+
+  &__figure {
+    grid-area: img;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  &__img {
+    height: 100%;
+    width: auto;
+  }
+
+  &__nav {
+    grid-area: nav;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+.header {
+  background: #232A34;
+  grid-area: header;
+  padding: 1rem 3rem;
+  display: flex;
+  align-items: center;
+
+  &__heading {
+    font-size: 24px;
+    font-weight: 900;
+    color: #fff;
+  }
+
+  &__btn {
+    text-decoration: none;
+    margin-left: auto;
+    align-self: auto;
+  }
+}
