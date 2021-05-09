@@ -21,6 +21,11 @@ export default function Menu() {
             Register
           </Link>
         </li>
+        <li className="nav__item">
+          <Link className="nav__link" to="/lesson-list">
+            Liste des lessons
+          </Link>
+        </li>
       </ul>
     </nav>
   );

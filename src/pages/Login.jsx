@@ -1,18 +1,32 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import axios from 'axios';
 import sideImg from '../../assets/img/login.jpg';
 import eye from '../../assets/img/eye.svg';
 import crossedEye from '../../assets/img/crossed-eye.svg';
 import styles from '../styles/pages/Login.scss';
 import Menu from './Menu';
+import apiClient from '../utils/apiClient';
 
-export default function Login() {
+export default function Login(props) {
   const [passwordShown, setPasswordShown] = useState(false);
+  const [error, setError] = useState('');
+  const [redirect, setRedirect] = useState(false);
 
   const showPassword = () => {
     setPasswordShown(!passwordShown);
   };
+
+  /**
+   * Check if email is correctly formatted
+   *
+   * @param {string} email
+   * @returns boolean
+   */
+  function validateEmail(email) {
+    const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(email).toLowerCase());
+  }
 
   const submitLogin = (e) => {
     e.preventDefault();
@@ -23,25 +37,30 @@ export default function Login() {
     const password = e.target.password.value;
     // TODO check password and set error
 
-    axios
+    apiClient
       .get('http://api.localhost/sanctum/csrf-cookie')
       .then((response) => {
-        axios
+        apiClient
           .post('http://api.localhost/api/auth/login', {
             email,
             password,
           })
           .then((user) => {
-            console.log(user);
+            props.login(user.data.data);
+            setRedirect(true);
           })
           .catch((error) => {
-            console.log(error);
+            setError(error);
           });
       })
       .catch((error) => {
-        console.log(error);
+        setError(error);
       });
   };
+
+  if (redirect) {
+    return <Redirect to="/" />;
+  }
 
   return (
     <section className={styles.login}>
@@ -50,9 +69,9 @@ export default function Login() {
       </h2>
       <div className={styles.header}>
         <span className={styles.header__heading}>Chess Teaching Tool</span>
-        <a href="/register" className={`${styles.header__btn} btn`}>
+        <Link to="/register" className={`${styles.header__btn} btn`}>
           Créer un compte
-        </a>
+        </Link>
       </div>
       <form
         action="/"

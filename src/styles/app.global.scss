@@ -26,7 +26,9 @@ h3,
 h4,
 h5,
 li,
-label {
+label,
+th,
+td {
   @include roboto(16px, $text-color);
 }
 

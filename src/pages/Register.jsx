@@ -2,11 +2,12 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import sideImg from '../../assets/img/login.jpg';
-import eye from '../../assets/img/eye.svg';
-import crossedEye from '../../assets/img/crossed-eye.svg';
 import styles from '../styles/pages/Register.scss';
 import Menu from './Menu';
 
+/**
+ * Component that renders the registration page
+ */
 export default function Register() {
   const [passwordShown, setPasswordShown] = useState(false);
   const [checkPasswordShown, setCheckPasswordShown] = useState(false);
@@ -31,7 +32,7 @@ export default function Register() {
     const password = e.target.password.value;
     // TODO check password and set error
 
-    const check_password = e.target.check_password.value;
+    const checkPassword = e.target.check_password.value;
     // TODO check password and set error
 
     axios
@@ -62,9 +63,9 @@ export default function Register() {
       </h2>
       <div className={styles.header}>
         <span className={styles.header__heading}>Chess Teaching Tool</span>
-        <a href="/register" className={`${styles.header__btn} btn`}>
+        <Link to="/login" className={`${styles.header__btn} btn`}>
           Se connecter
-        </a>
+        </Link>
       </div>
       <form
         action="/"
@@ -176,7 +177,7 @@ export default function Register() {
           <span className="label">Password</span>
           <div className={styles.register__password_wrapper}>
             <input
-              type={passwordShown ? 'text' : 'password'}
+              type={checkPasswordShown ? 'text' : 'password'}
               id="check_password"
               name="check_password"
               placeholder="Mot de passe"
@@ -184,7 +185,7 @@ export default function Register() {
             />
             <button type="button" onClick={showCheckPassword}>
               <span className="sr-only">Afficher le mot de passe</span>
-              {!passwordShown ? (
+              {!checkPasswordShown ? (
                 <svg
                   className={styles.register__toggl}
                   version="1.1"
