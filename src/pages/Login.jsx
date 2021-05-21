@@ -11,6 +11,7 @@ import apiClient from '../utils/apiClient';
 export default function Login(props) {
   const [passwordShown, setPasswordShown] = useState(false);
   const [error, setError] = useState('');
+  const [loadingStatus, setLoadingStatus] = useState(false);
   const [redirect, setRedirect] = useState(false);
 
   const showPassword = () => {
@@ -38,20 +39,15 @@ export default function Login(props) {
     // TODO check password and set error
 
     apiClient
-      .get('http://api.localhost/sanctum/csrf-cookie')
+      .post('sanctum/token', {
+        email,
+        password,
+        device_name: 'Chess Teaching Tool',
+      })
       .then((response) => {
-        apiClient
-          .post('http://api.localhost/api/auth/login', {
-            email,
-            password,
-          })
-          .then((user) => {
-            props.login(user.data.data);
-            setRedirect(true);
-          })
-          .catch((error) => {
-            setError(error);
-          });
+        props.login(response.data);
+        setRedirect(true);
+        return null;
       })
       .catch((error) => {
         setError(error);
@@ -170,7 +166,11 @@ export default function Login(props) {
             </button>
           </div>
         </label>
-        <button type="submit" className="btn btn--submit">
+        <button
+          type="submit"
+          className="btn btn--submit"
+          disabled={loadingStatus}
+        >
           Se connecter
         </button>
       </form>
