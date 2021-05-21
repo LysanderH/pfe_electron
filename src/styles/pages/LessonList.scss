@@ -12,11 +12,19 @@
     margin: 32px auto;
   }
 
+  table {
+    background: #fff;
+  }
+
   tr {
     // background: #E4E4E4;
 
-    :nth-child(even) {
+    &:nth-child(even) {
       background: #F2F2F2;
+    }
+
+    &:nth-child(odd) {
+      background: #fdfdfd;
     }
   }
 
@@ -49,6 +57,13 @@
   padding: 1rem 3rem;
   display: flex;
   align-items: center;
+
+  svg {
+    fill: #fff;
+    height: 32px;
+    width: 40px;
+    margin-right: 16px;
+  }
 
   &__heading {
     font-size: 24px;

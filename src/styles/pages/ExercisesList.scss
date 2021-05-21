@@ -1,0 +1,122 @@
+.exercises_list {
+  max-width: 1633px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-areas: 'header header header''heading new label''list list list''pagination pagination pagination';
+
+  &__heading {
+    grid-area: heading;
+    font-family: 'Roboto', sans-serif;
+    font-size: 3rem;
+    font-weight: 900;
+    margin: 32px auto;
+  }
+
+  &__title {
+    font-family: 'Roboto', sans-serif;
+    font-size: 2rem;
+    font-weight: 900;
+    margin: 32px auto;
+    text-decoration: none;
+  }
+
+  &__new {
+    grid-area: new;
+    justify-self: end;
+    align-self: center;
+    text-decoration: none;
+  }
+
+  &__label {
+    grid-area: label;
+    display: flex;
+  }
+
+  &__select {
+    margin: auto;
+    width: 90%;
+  }
+
+  &__list {
+    grid-area: list;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 1rem;
+  }
+
+  &__tag {
+    background-color: #232A34;
+    color: #fff;
+    align-self: flex-start;
+    padding: 4px 8px;
+  }
+
+  &__item {
+    padding: 16px;
+    box-shadow: 0px 0px 16px 0px rgba(0, 0, 0, 0.1);
+
+    & a {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      text-decoration: none;
+    }
+  }
+
+  &__img {
+    width: 75%;
+    height: auto;
+    margin: auto;
+  }
+
+  &__color {
+    width: 16px;
+    height: 16px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: black;
+  }
+
+  &__color_white {
+    border: 2px solid #000;
+  }
+
+  &__pagination {
+    grid-area: pagination;
+    display: flex;
+    margin-top: 3rem;
+    justify-content: center;
+
+    a {
+      padding: 4px 8px;
+    }
+  }
+}
+
+.header {
+  background: #232A34;
+  grid-area: header;
+  padding: 1rem 3rem;
+  display: flex;
+  align-items: center;
+
+  svg {
+    fill: #fff;
+    height: 32px;
+    width: 40px;
+    margin-right: 16px;
+  }
+
+  &__heading {
+    font-size: 24px;
+    font-weight: 900;
+    color: #fff;
+  }
+
+  &__btn {
+    text-decoration: none;
+    margin-left: auto;
+    align-self: auto;
+  }
+}
