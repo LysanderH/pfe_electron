@@ -36,7 +36,8 @@ td {
   @include sr-only;
 }
 
-input {
+input,
+textarea {
   @include roboto(16px, $text-color);
 
   background: $input-background;
@@ -44,6 +45,15 @@ input {
   border-radius: 5px;
   padding: .8em;
 
+}
+
+select {
+  @include roboto(16px, $text-color);
+
+  background: $input-background;
+  border: none;
+  border-radius: 5px;
+  padding: .8em;
 }
 
 .label {

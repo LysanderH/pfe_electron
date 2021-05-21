@@ -1,0 +1,56 @@
+.preferences {
+  max-width: 1633px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-areas: 'header header header''form form form';
+
+  &__heading {
+    grid-area: heading;
+    font-family: 'Roboto', sans-serif;
+    font-size: 2rem;
+    font-weight: 900;
+    margin: 32px auto;
+  }
+
+  &__form {
+    grid-area: form;
+    display: flex;
+    flex-direction: column;
+    max-width: 500px;
+    width: 100%;
+    margin: auto;
+  }
+
+  &__label {
+    margin-bottom: 1rem;
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+.header {
+  background: #232A34;
+  grid-area: header;
+  padding: 1rem 3rem;
+  display: flex;
+  align-items: center;
+
+  svg {
+    fill: #fff;
+    height: 32px;
+    width: 40px;
+    margin-right: 16px;
+  }
+
+  &__heading {
+    font-size: 24px;
+    font-weight: 900;
+    color: #fff;
+  }
+
+  &__btn {
+    text-decoration: none;
+    margin-left: auto;
+    align-self: auto;
+  }
+}

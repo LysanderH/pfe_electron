@@ -4,6 +4,7 @@ import axios from 'axios';
 import sideImg from '../../assets/img/login.jpg';
 import styles from '../styles/pages/Register.scss';
 import Menu from './Menu';
+import apiClient from '../utils/apiClient';
 
 /**
  * Component that renders the registration page
@@ -35,21 +36,14 @@ export default function Register() {
     const checkPassword = e.target.check_password.value;
     // TODO check password and set error
 
-    axios
-      .get('http://api.localhost/sanctum/csrf-cookie')
-      .then((response) => {
-        axios
-          .post('http://api.localhost/api/auth/register', {
-            name,
-            email,
-            password,
-          })
-          .then((user) => {
-            console.log(user);
-          })
-          .catch((error) => {
-            console.log(error);
-          });
+    apiClient
+      .post('http://api.localhost/api/auth/register', {
+        name,
+        email,
+        password,
+      })
+      .then((user) => {
+        console.log(user.data);
       })
       .catch((error) => {
         console.log(error);
