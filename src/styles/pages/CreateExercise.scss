@@ -1,0 +1,80 @@
+.new_exercise {
+  max-width: 1633px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-areas: 'header''heading''form';
+
+  &__heading {
+    grid-area: heading;
+    font-family: 'Roboto', sans-serif;
+    font-size: 2rem;
+    font-weight: 900;
+    margin: 32px auto;
+  }
+
+  &__form {
+    grid-area: form;
+    display: flex;
+    flex-direction: column;
+    width: 800px;
+    margin: auto;
+    box-shadow: 0px 0px 16px 0px rgba(0, 0, 0, 0.1);
+
+  }
+
+  &__form_head {
+    display: flex;
+  }
+
+  &__form_body {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    width: 100%;
+    padding: 1rem;
+    grid-gap: 1rem;
+  }
+
+  &__button {
+    padding: 16px;
+    border: 1px solid #E6E6E6;
+    flex: 1;
+  }
+
+  &__label {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    grid-column: 1/-1;
+  }
+}
+
+.header {
+  background: #232A34;
+  grid-area: header;
+  padding: 1rem 3rem;
+  display: flex;
+  align-items: center;
+
+  svg {
+    fill: #fff;
+    height: 32px;
+    width: 40px;
+    margin-right: 16px;
+  }
+
+  &__heading {
+    font-size: 24px;
+    font-weight: 900;
+    color: #fff;
+  }
+
+  &__btn {
+    text-decoration: none;
+    margin-left: auto;
+    align-self: auto;
+  }
+}
