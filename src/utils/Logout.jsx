@@ -14,7 +14,7 @@ export default function Logout(props) {
     })
     .catch((error) => {
       console.log(error);
-      return <Redirect to="/logout" />;
+      return <Redirect to="/" />;
     });
 
   // return <Redirect to="/login" />;

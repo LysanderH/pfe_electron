@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import styles from '../styles/pages/ExercisesList.scss';
 import apiClient from '../utils/apiClient';
-// TODO
+
 export default function ExerciseList() {
   const [PageIndex, setPageIndex] = useState(1);
   const [exercises, setExercises] = useState([]);
@@ -11,7 +11,6 @@ export default function ExerciseList() {
   const [tactics, setTactics] = useState([]);
 
   useEffect(() => {
-    console.log(axios.defaults.headers);
     apiClient
       .get('exercises')
       .then((response) => {
@@ -62,7 +61,9 @@ export default function ExerciseList() {
         </Link>
       </div>
       <section className={styles.exercises_list}>
-        <h2 className={styles.exercises_list__heading}>Liste de vos classes</h2>
+        <h2 className={styles.exercises_list__heading}>
+          Liste de vos exercices
+        </h2>
         <Link
           to="/exercises/create"
           className={`${styles.exercises_list__new} btn`}
@@ -81,18 +82,31 @@ export default function ExerciseList() {
           </select>
         </label>
         <ul className={styles.exercises_list__list}>
-          <li className={styles.exercises_list__item}>
-            <Link to="exercises/show/1" className={styles.exercises_list__link}>
-              <img
-                src="http://api.localhost/storage/img/exemple.png"
-                alt="Positions des pièces"
-                className={styles.exercises_list__img}
-              />
-              <p className={styles.exercises_list__title}>Gain de pièce</p>
-              <span className={styles.exercises_list__tag}>La fourchette</span>
-              <div className={styles.exercises_list__color} />
-            </Link>
-          </li>
+          {exercises ? (
+            exercises.map((exercise) => (
+              <li className={styles.exercises_list__item} key={exercise.id}>
+                <Link
+                  to={`exercises/show/${exercise.id}`}
+                  className={styles.exercises_list__link}
+                >
+                  <img
+                    src="http://api.localhost/storage/img/exemple.png"
+                    alt="Positions des pièces"
+                    className={styles.exercises_list__img}
+                  />
+                  <p className={styles.exercises_list__title}>Gain de pièce</p>
+                  <span className={styles.exercises_list__tag}>
+                    La fourchette
+                  </span>
+                  <div className={styles.exercises_list__color} />
+                </Link>
+              </li>
+            ))
+          ) : (
+            <li className={styles.exercises_list__item}>
+              Il n’y a pas encore d’exercices
+            </li>
+          )}
         </ul>
         {links.count > 3 ? (
           <ul className={styles.exercises_list__pagination}>

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import sideImg from '../../assets/img/login.jpg';
 import styles from '../styles/pages/Register.scss';
@@ -8,10 +8,12 @@ import apiClient from '../utils/apiClient';
 /**
  * Component that renders the registration page
  */
-export default function Register() {
+export default function Register(props) {
   const [passwordShown, setPasswordShown] = useState(false);
   const [checkPasswordShown, setCheckPasswordShown] = useState(false);
+  const [error, setError] = useState(false);
   const [redirect, setRedirect] = useState(false);
+  const [loadingStatus, setLoadingStatus] = useState(false);
 
   const showPassword = () => {
     setPasswordShown(!passwordShown);
@@ -21,20 +23,47 @@ export default function Register() {
     setCheckPasswordShown(!checkPasswordShown);
   };
 
+  /**
+   * Check if email is correctly formatted
+   *
+   * @param {string} email
+   * @returns boolean
+   */
+  function validateEmail(email) {
+    const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(email).toLowerCase());
+  }
+
   const submitRegister = (e) => {
     e.preventDefault();
+    setLoadingStatus(true);
 
     const name = e.target.name.value;
-    // TODO check email and set error
+    const nameRegEx = /^[A-Za-z]+$/;
+    if (!nameRegEx.test(name)) {
+      setLoadingStatus(false);
+      return setError('Le nom ne peux pas contenir des schiffres.');
+    }
 
     const email = e.target.email.value;
-    // TODO check email and set error
+    if (!validateEmail(email)) {
+      setLoadingStatus(false);
+      return setError(
+        'Veuillez mettre une adresse email au format example@mail.com'
+      );
+    }
 
     const password = e.target.password.value;
-    // TODO check password and set error
+    if (password.length < 8) {
+      setLoadingStatus(false);
+      return setError('Le mot de passe doit contenir 8 caractères.');
+    }
 
     const checkPassword = e.target.check_password.value;
-    // TODO check password and set error
+    if (checkPassword !== password) {
+      setLoadingStatus(false);
+      return setError('Le mot de passe n’est pas égal');
+    }
 
     apiClient
       .post('sanctum/register', {
@@ -47,18 +76,125 @@ export default function Register() {
       .then((response) => {
         props.login(response.data);
         setRedirect(true);
+        setLoadingStatus(false);
         return null;
       })
-      .catch((error) => {
-        setError(error);
+      .catch((errors) => {
+        setLoadingStatus(false);
+        setError(
+          errors.response.data.errors.message ??
+            'Une erreur vient de se produire'
+        );
       });
+
+    return null;
   };
 
   if (redirect) {
     return <Redirect to="/" />;
   }
 
-  return (
+  const svgStyle = {
+    margin: 'auto',
+    background: 'transparent none repeat scroll 0% 0%',
+    display: 'block',
+    'shape-rendering': 'auto',
+  };
+
+  return loadingStatus ? (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      style={svgStyle}
+      width="200px"
+      height="200px"
+      viewBox="0 0 100 100"
+      preserveAspectRatio="xMidYMid"
+    >
+      <g>
+        <circle cx="60" cy="50" r="4" fill="#28292f">
+          <animate
+            attributeName="cx"
+            repeatCount="indefinite"
+            dur="1s"
+            values="95;35"
+            keyTimes="0;1"
+            begin="-0.67s"
+          />
+          <animate
+            attributeName="fill-opacity"
+            repeatCount="indefinite"
+            dur="1s"
+            values="0;1;1"
+            keyTimes="0;0.2;1"
+            begin="-0.67s"
+          />
+        </circle>
+        <circle cx="60" cy="50" r="4" fill="#28292f">
+          <animate
+            attributeName="cx"
+            repeatCount="indefinite"
+            dur="1s"
+            values="95;35"
+            keyTimes="0;1"
+            begin="-0.33s"
+          />
+          <animate
+            attributeName="fill-opacity"
+            repeatCount="indefinite"
+            dur="1s"
+            values="0;1;1"
+            keyTimes="0;0.2;1"
+            begin="-0.33s"
+          />
+        </circle>
+        <circle cx="60" cy="50" r="4" fill="#28292f">
+          <animate
+            attributeName="cx"
+            repeatCount="indefinite"
+            dur="1s"
+            values="95;35"
+            keyTimes="0;1"
+            begin="0s"
+          />
+          <animate
+            attributeName="fill-opacity"
+            repeatCount="indefinite"
+            dur="1s"
+            values="0;1;1"
+            keyTimes="0;0.2;1"
+            begin="0s"
+          />
+        </circle>
+      </g>
+      <g transform="translate(-15 0)">
+        <path
+          d="M50 50L20 50A30 30 0 0 0 80 50Z"
+          fill="#0a0a0a"
+          transform="rotate(90 50 50)"
+        />
+        <path d="M50 50L20 50A30 30 0 0 0 80 50Z" fill="#0a0a0a">
+          <animateTransform
+            attributeName="transform"
+            type="rotate"
+            repeatCount="indefinite"
+            dur="1s"
+            values="0 50 50;45 50 50;0 50 50"
+            keyTimes="0;0.5;1"
+          />
+        </path>
+        <path d="M50 50L20 50A30 30 0 0 1 80 50Z" fill="#0a0a0a">
+          <animateTransform
+            attributeName="transform"
+            type="rotate"
+            repeatCount="indefinite"
+            dur="1s"
+            values="0 50 50;-45 50 50;0 50 50"
+            keyTimes="0;0.5;1"
+          />
+        </path>
+      </g>
+    </svg>
+  ) : (
     <section className={styles.register}>
       <h2 aria-level="2" className={styles.register__heading}>
         Créer un compte
@@ -77,6 +213,11 @@ export default function Register() {
         }}
         className={styles.register__form}
       >
+        {error ? (
+          <p className={styles.login__error}>
+            Les identifiants ne sont pas correct
+          </p>
+        ) : null}
         <label htmlFor="name" className={styles.register__label}>
           <span className="label">Nom</span>
           <input

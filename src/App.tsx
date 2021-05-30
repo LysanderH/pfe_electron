@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { MemoryRouter as Router, Switch, Route } from 'react-router-dom';
-import axios from 'axios';
+
 import Menu from './pages/Menu';
 import Login from './pages/Login';
 import Register from './pages/Register';
@@ -47,7 +47,9 @@ export default function App() {
         <Route path="/login">
           <Login login={login} />
         </Route>
-        <Route path="/register" component={Register} />
+        <Route path="/register" component={Register}>
+          <Register login={login} />
+        </Route>
         <Route path="/logout">
           <Logout />
         </Route>

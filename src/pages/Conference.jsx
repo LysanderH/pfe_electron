@@ -5,23 +5,23 @@ import axios from 'axios';
 import apiClient from '../utils/apiClient';
 import styles from '../styles/pages/Conference.scss';
 
-window.Pusher = require('pusher-js');
+// window.Pusher = require('pusher-js');
 
-const token = sessionStorage.getItem('user') ?? '';
+// const token = sessionStorage.getItem('user') ?? '';
 
-axios.defaults.headers.common.Authorization = `Bearer ${token}`;
+// axios.defaults.headers.common.Authorization = `Bearer ${token}`;
 
-window.Echo = new Echo({
-  broadcaster: 'pusher',
-  // host: 'https://api.localhost',
-  key: 'bc9ce7f1e2a8c4c77e2f',
-  cluster: 'eu',
-  // auth: {
-  //   Authorization: `Bearer ${token}`,
-  // },
-});
+// window.Echo = new Echo({
+//   broadcaster: 'pusher',
+//   // host: 'https://api.localhost',
+//   key: 'bc9ce7f1e2a8c4c77e2f',
+//   cluster: 'eu',
+//   // auth: {
+//   //   Authorization: `Bearer ${token}`,
+//   // },
+// });
 
-console.log(window.Echo);
+// console.log(window.Echo);
 
 export default function Conference() {
   const [hasMedia, setHasMedia] = useState(false);
