@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
+import PropTypes from 'prop-types';
 import sideImg from '../../assets/img/login.jpg';
 import styles from '../styles/pages/Register.scss';
-import Menu from './Menu';
 import apiClient from '../utils/apiClient';
 
 /**
@@ -12,6 +11,7 @@ import apiClient from '../utils/apiClient';
 export default function Register() {
   const [passwordShown, setPasswordShown] = useState(false);
   const [checkPasswordShown, setCheckPasswordShown] = useState(false);
+  const [redirect, setRedirect] = useState(false);
 
   const showPassword = () => {
     setPasswordShown(!passwordShown);
@@ -21,7 +21,7 @@ export default function Register() {
     setCheckPasswordShown(!checkPasswordShown);
   };
 
-  const submitLogin = (e) => {
+  const submitRegister = (e) => {
     e.preventDefault();
 
     const name = e.target.name.value;
@@ -37,18 +37,26 @@ export default function Register() {
     // TODO check password and set error
 
     apiClient
-      .post('http://api.localhost/api/auth/register', {
+      .post('sanctum/register', {
         name,
         email,
         password,
+        password_confirmation: checkPassword,
+        device_name: 'Chess Teaching Tool',
       })
-      .then((user) => {
-        console.log(user.data);
+      .then((response) => {
+        props.login(response.data);
+        setRedirect(true);
+        return null;
       })
       .catch((error) => {
-        console.log(error);
+        setError(error);
       });
   };
+
+  if (redirect) {
+    return <Redirect to="/" />;
+  }
 
   return (
     <section className={styles.register}>
@@ -65,7 +73,7 @@ export default function Register() {
         action="/"
         method="get"
         onSubmit={(e) => {
-          submitregister(e);
+          submitRegister(e);
         }}
         className={styles.register__form}
       >
@@ -266,3 +274,11 @@ export default function Register() {
     </section>
   );
 }
+
+Register.defaultProps = {
+  login: {},
+};
+
+Register.propTypes = {
+  login: PropTypes.func,
+};

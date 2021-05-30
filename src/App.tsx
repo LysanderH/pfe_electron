@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { MemoryRouter as Router, Switch, Route } from 'react-router-dom';
+import axios from 'axios';
 import Menu from './pages/Menu';
 import Login from './pages/Login';
 import Register from './pages/Register';
@@ -16,25 +17,29 @@ import MyClass from './pages/MyClass';
 import Logout from './utils/Logout';
 import StartConference from './pages/StartConference';
 import Conference from './pages/Conference';
+import Participate from './pages/Participate';
+import apiClient from './utils/apiClient';
 
 /**
  * Main component
  */
 export default function App() {
-  const [loggedIn, setLoggedIn] = useState(
-    sessionStorage.getItem('loggedIn') === 'true' || false
-  );
-
+  const [user, setUser] = useState();
   /**
    * Sets the state loggedIn to true
    * @set sessionStorage loggedIn
    * @set loggedIn true
    */
   const login = (user) => {
-    setLoggedIn(true);
-    sessionStorage.setItem('user', JSON.stringify(user));
+    setUser(user);
+    apiClient.defaults.headers.common.Authorization = `Bearer ${user}`;
+    console.log(apiClient.defaults.headers);
+
+    sessionStorage.setItem('user', user);
     sessionStorage.setItem('loggedIn', true);
   };
+
+  useEffect(() => {}, []);
 
   return (
     <Router>
@@ -44,7 +49,7 @@ export default function App() {
         </Route>
         <Route path="/register" component={Register} />
         <Route path="/logout">
-          <Logout setLoggedIn={setLoggedIn} />
+          <Logout />
         </Route>
         <PrivateRoute path="/preferences" component={Preferences} />
         <PrivateRoute path="/lessons" component={LessonList} />
@@ -55,6 +60,7 @@ export default function App() {
         <PrivateRoute path="/exercises/show" component={Exercise} />
         <PrivateRoute path="/exercises" component={ExerciseList} />
         <PrivateRoute path="/start-conference" component={StartConference} />
+        <PrivateRoute path="/participate-conference" component={Participate} />
         <PrivateRoute path="/conference" component={Conference} />
         <PrivateRoute path="/" component={Menu} />
       </Switch>

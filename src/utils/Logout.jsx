@@ -1,19 +1,29 @@
 import React from 'react';
 import { Redirect } from 'react-router';
+import PropTypes from 'prop-types';
 import apiClient from './apiClient';
 
 export default function Logout(props) {
   apiClient
-    .post('http://api.localhost/api/auth/logout', {
+    .post('auth/logout', {
       user: sessionStorage.getItem('user'),
     })
-    .then((user) => {
-      props.setLoggedIn(false);
+    .then(() => {
       sessionStorage.clear();
+      return <Redirect to="/login" />;
     })
     .catch((error) => {
       console.log(error);
+      return <Redirect to="/logout" />;
     });
 
-  return <Redirect to="/login" />;
+  // return <Redirect to="/login" />;
 }
+
+Logout.defaultProps = {
+  setLoggedIn: () => {},
+};
+
+Logout.propTypes = {
+  setLoggedIn: PropTypes.func,
+};

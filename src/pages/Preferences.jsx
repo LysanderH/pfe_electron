@@ -10,6 +10,7 @@ export default function Preferences() {
       .get('user')
       .then((response) => {
         setUser(response.data);
+        return null;
       })
       .catch((error) => {
         console.log(error);
@@ -44,6 +45,7 @@ export default function Preferences() {
               id="name"
               placeholder="Max Mustermann"
               name="name"
+              defaultValue={user.name ?? ''}
             />
           </label>
           <label htmlFor="email" className={styles.preferences__label}>
@@ -53,6 +55,7 @@ export default function Preferences() {
               id="email"
               placeholder="exemple@mail.com"
               name="email"
+              defaultValue={user.email ?? ''}
             />
           </label>
           <label htmlFor="password" className={styles.preferences__label}>
@@ -70,7 +73,7 @@ export default function Preferences() {
               type="password"
               id="newpassword"
               placeholder="***********"
-              name="newpassword"
+              name="password__confirmation"
             />
           </label>
           <label htmlFor="confirm" className={styles.preferences__label}>

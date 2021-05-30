@@ -123,7 +123,7 @@ export default function Menu() {
             </Link>
           </li>
           <li className={styles.main_menu__item}>
-            <Link className="nav__link" to="/participate">
+            <Link className="nav__link" to="/participate-conference">
               <svg
                 enableBackground="new 0 0 512 512"
                 viewBox="0 0 512 512"

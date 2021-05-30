@@ -1,11 +1,8 @@
 import React, { useState } from 'react';
 import { Link, Redirect } from 'react-router-dom';
-import axios from 'axios';
+import PropTypes from 'prop-types';
 import sideImg from '../../assets/img/login.jpg';
-import eye from '../../assets/img/eye.svg';
-import crossedEye from '../../assets/img/crossed-eye.svg';
 import styles from '../styles/pages/Login.scss';
-import Menu from './Menu';
 import apiClient from '../utils/apiClient';
 
 export default function Login(props) {
@@ -32,14 +29,26 @@ export default function Login(props) {
   const submitLogin = (e) => {
     e.preventDefault();
 
+    setLoadingStatus(true);
+
     const email = e.target.email.value;
-    // TODO check email and set error
+
+    if (!validateEmail(email)) {
+      setLoadingStatus(false);
+      return setError(
+        'Veuillez mettre une adresse email au format example@mail.com'
+      );
+    }
 
     const password = e.target.password.value;
-    // TODO check password and set error
+
+    if (password.length === 0) {
+      setLoadingStatus(false);
+      return setError('Le champ mot de passe ne peux pas être libre');
+    }
 
     apiClient
-      .post('sanctum/token', {
+      .post('sanctum/login', {
         email,
         password,
         device_name: 'Chess Teaching Tool',
@@ -47,18 +56,24 @@ export default function Login(props) {
       .then((response) => {
         props.login(response.data);
         setRedirect(true);
+        setLoadingStatus(false);
         return null;
       })
-      .catch((error) => {
-        setError(error);
+      .catch(() => {
+        setLoadingStatus(false);
+        setError('Les identifiants que vous avez fourni ne sont pas correct');
       });
+
+    return null;
   };
 
   if (redirect) {
     return <Redirect to="/" />;
   }
 
-  return (
+  return loadingStatus ? (
+    <p>Loading...</p>
+  ) : (
     <section className={styles.login}>
       <h2 aria-level="2" className={styles.login__heading}>
         Se connecter
@@ -77,6 +92,11 @@ export default function Login(props) {
         }}
         className={styles.login__form}
       >
+        {error ? (
+          <p className={styles.login__error}>
+            Les identifiants ne sont pas correct
+          </p>
+        ) : null}
         <label htmlFor="email" className={styles.login__label}>
           <span className="label">Email</span>
           <input
@@ -189,3 +209,11 @@ export default function Login(props) {
     </section>
   );
 }
+
+Login.defaultProps = {
+  login: () => {},
+};
+
+Login.propTypes = {
+  login: PropTypes.func,
+};

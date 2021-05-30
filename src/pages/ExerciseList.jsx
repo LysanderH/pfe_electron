@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import styles from '../styles/pages/ExercisesList.scss';
@@ -10,6 +11,7 @@ export default function ExerciseList() {
   const [tactics, setTactics] = useState([]);
 
   useEffect(() => {
+    console.log(axios.defaults.headers);
     apiClient
       .get('exercises')
       .then((response) => {
@@ -17,6 +19,7 @@ export default function ExerciseList() {
         setExercises(response.data.exercises.data);
         setLinks(response.data.exercises.links);
         setTactics(response.data.tactics);
+        return null;
       })
       .catch((error) => {
         console.log(error);
@@ -31,6 +34,7 @@ export default function ExerciseList() {
         console.log(response);
         setExercises(response.data.exercises.data);
         setLinks(response.data.exercises.links);
+        return null;
       })
       .catch((error) => {
         console.log(error);
@@ -93,7 +97,10 @@ export default function ExerciseList() {
         {links.count > 3 ? (
           <ul className={styles.exercises_list__pagination}>
             {links.map((link, index) => (
-              <li className={styles.exercises_list__previous} key={index}>
+              <li
+                className={styles.exercises_list__previous}
+                key={link.toString()}
+              >
                 <Link to={link.url}>{link.label}</Link>
               </li>
             ))}

@@ -14,5 +14,12 @@
     "postinstall": "yarn electron-rebuild"
   },
   "license": "MIT",
-  "dependencies": {}
+  "dependencies": {
+    "laravel-echo": "^1.10.0",
+    "pusher-js": "^7.0.3",
+    "socket.io-client": "^4.1.2"
+  },
+  "devDependencies": {
+    "react-styleguidist": "^11.1.6"
+  }
 }

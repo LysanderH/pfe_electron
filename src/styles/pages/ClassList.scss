@@ -2,7 +2,7 @@
   max-width: 1633px;
   margin: 0 auto;
   display: grid;
-  grid-template-areas: 'header header''heading new''table table';
+  grid-template-areas: 'header header' 'heading new' 'table table';
 
   &__heading {
     grid-area: heading;
@@ -16,18 +16,18 @@
     // background: #E4E4E4;
 
     &:nth-child(even) {
-      background: #F2F2F2;
+      background: #f2f2f2;
     }
   }
 
   td,
   th {
-    padding: .6rem 1rem;
+    padding: 0.6rem 1rem;
     background-color: transparent;
   }
 
   &__btn {
-    background: #05A081;
+    background: #05a081;
     text-decoration: none;
   }
 
@@ -44,11 +44,18 @@
 }
 
 .header {
-  background: #232A34;
+  background: #232a34;
   grid-area: header;
   padding: 1rem 3rem;
   display: flex;
   align-items: center;
+
+  svg {
+    fill: #fff;
+    height: 32px;
+    width: 40px;
+    margin-right: 16px;
+  }
 
   &__heading {
     font-size: 24px;

@@ -69,7 +69,9 @@ export default function CreateClass() {
         <ul className={styles.create_class__list}>
           {students ? (
             students.map((student) => (
-              <li className={styles.create_class__list_item}>{student}</li>
+              <li key={student} className={styles.create_class__list_item}>
+                {student}
+              </li>
             ))
           ) : (
             <li className={styles.create_class__list_item}>

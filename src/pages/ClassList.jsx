@@ -6,6 +6,18 @@ export default function ClassList() {
   return (
     <>
       <div className={styles.header}>
+        <Link to="/">
+          <svg
+            height="384pt"
+            viewBox="0 -53 384 384"
+            width="384pt"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path d="m368 154.667969h-352c-8.832031 0-16-7.167969-16-16s7.167969-16 16-16h352c8.832031 0 16 7.167969 16 16s-7.167969 16-16 16zm0 0" />
+            <path d="m368 32h-352c-8.832031 0-16-7.167969-16-16s7.167969-16 16-16h352c8.832031 0 16 7.167969 16 16s-7.167969 16-16 16zm0 0" />
+            <path d="m368 277.332031h-352c-8.832031 0-16-7.167969-16-16s7.167969-16 16-16h352c8.832031 0 16 7.167969 16 16s-7.167969 16-16 16zm0 0" />
+          </svg>
+        </Link>
         <span className={styles.header__heading}>Chess Teaching Tool</span>
         <Link to="/logout" className={`${styles.header__btn} btn`}>
           Se déconnecter
@@ -23,7 +35,7 @@ export default function ClassList() {
           <thead>
             <tr>
               <th scope="col">Nom</th>
-              <th scope="col">Nombre d'élèves</th>
+              <th scope="col">Nombre d’élèves</th>
               <th scope="col">Actions</th>
             </tr>
           </thead>

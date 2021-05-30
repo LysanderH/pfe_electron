@@ -7,8 +7,8 @@ $root-font-size: 16px;
 
 $text-color: #333;
 $text-white: #fff;
-$input-background: #E4E4E4;
-$btn: #05A081;
+$input-background: #e4e4e4;
+$btn: #05a081;
 $btn-hover: #03745d;
 
 // TODO remove
@@ -43,8 +43,7 @@ textarea {
   background: $input-background;
   border: none;
   border-radius: 5px;
-  padding: .8em;
-
+  padding: 0.8em;
 }
 
 select {
@@ -53,7 +52,16 @@ select {
   background: $input-background;
   border: none;
   border-radius: 5px;
-  padding: .8em;
+  padding: 0.8em;
+}
+
+option {
+  @include roboto(16px, $text-color);
+
+  background: $input-background;
+  border: none;
+  border-radius: 5px;
+  padding: 0.8em;
 }
 
 .label {
@@ -63,10 +71,10 @@ select {
 
 .btn {
   background: $btn;
-  padding: .4em .6em;
+  padding: 0.4em 0.6em;
   border-radius: 5px;
   @include roboto(16px, $text-white);
-  transition: background .2s ease-in-out;
+  transition: background 0.2s ease-in-out;
   align-self: flex-end;
   margin-top: 1rem;
   cursor: pointer;
