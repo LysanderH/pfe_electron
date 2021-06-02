@@ -16,10 +16,14 @@
     grid-area: form;
     display: flex;
     flex-direction: column;
-    width: 800px;
+    min-width: 800px;
     margin: auto;
     box-shadow: 0px 0px 16px 0px rgba(0, 0, 0, 0.1);
+  }
 
+  &__buttons {
+    display: flex;
+    align-items: flex-end;
   }
 
   &__form_head {
@@ -35,7 +39,7 @@
   }
 
   &__button {
-    padding: 16px;
+    padding: 1rem;
     border: 1px solid #E6E6E6;
     flex: 1;
   }

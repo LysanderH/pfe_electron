@@ -10,9 +10,15 @@ import styles from '../styles/pages/Conference.scss';
 const Chess = require('chess.js');
 
 export default function Conference() {
-  const [roomId, setRoomId] = useState();
+  const [roomId, setRoomId] = useState('');
   const [jitsi, setJitsi] = useState({});
   const [user, setUser] = useState();
+  const [exercises, setExercises] = useState([]);
+
+  const [chess] = useState(
+    new Chess('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1')
+  );
+  const [fen, setFen] = useState(chess.fen());
 
   const jitsiContainerId = 'jitsi-container-id';
 
@@ -30,11 +36,6 @@ export default function Conference() {
     document.body.appendChild(script);
 
     return loadJitsiScriptPromise;
-  };
-
-  const disconnect = (e) => {
-    e.preventDefault();
-    return <Redirect to="/" />;
   };
 
   const initialiseJitsi = async (room, currentUser) => {
@@ -56,16 +57,27 @@ export default function Conference() {
     setJitsi(jitsi);
   };
 
+  const disconnect = () => {
+    sessionStorage.removeItem('roomId');
+    console.log('disconnected');
+    return <Redirect to="/" />;
+  };
+
   useEffect(() => {
     apiClient
       .post('/rooms', {
         offerer: JSON.stringify({}),
         group: sessionStorage.getItem('user'),
+        lesson: sessionStorage.getItem('lesson'),
       })
       .then((response) => {
         setRoomId(response.data.room.id);
         setUser(response.data.user.name);
+        setExercises(response.data.exercises);
+        sessionStorage.setItem('roomId', response.data.room.id);
         initialiseJitsi(response.data.room.id, response.data.user);
+        // jitsi.addEventListener('videoConferenceLeft', disconnect);
+
         return null;
       })
       .catch((error) => console.error(error));
@@ -80,16 +92,47 @@ export default function Conference() {
   const toggleVideo = (e) => {};
   const toggleMic = (e) => {};
 
-  const [chess] = useState(
-    new Chess('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1')
-  );
-  const [fen, setFen] = useState(chess.fen());
-
   const handleMove = (newMove) => {
-    // const moves = chess.moves();
-    chess.move(newMove);
-    console.log(chess.fen());
+    chess.load(fen);
+
+    const pieces = {
+      wK: { type: chess.KING, color: chess.WHITE },
+      bK: { type: chess.KING, color: chess.BLACK },
+      wQ: { type: chess.QUEEN, color: chess.WHITE },
+      bQ: { type: chess.QUEEN, color: chess.BLACK },
+      wR: { type: chess.ROOK, color: chess.WHITE },
+      bR: { type: chess.ROOK, color: chess.BLACK },
+      wB: { type: chess.BISHOP, color: chess.WHITE },
+      bB: { type: chess.BISHOP, color: chess.BLACK },
+      wN: { type: chess.KNIGHT, color: chess.WHITE },
+      bN: { type: chess.KNIGHT, color: chess.BLACK },
+      wP: { type: chess.PAWN, color: chess.WHITE },
+      bP: { type: chess.PAWN, color: chess.BLACK },
+    };
+
+    if (newMove.from === 'spare') {
+      const pieceOnSquare = chess.get(newMove.to)
+        ? chess.get(newMove.to).color + chess.get(newMove.to).type.toUpperCase()
+        : false;
+      if (pieceOnSquare === newMove.piece) {
+        chess.remove(newMove.to);
+        chess.remove(newMove.from);
+      } else {
+        chess.put(pieces[newMove.piece], newMove.to);
+      }
+    } else {
+      chess.remove(newMove.to);
+      chess.put(pieces[newMove.piece], newMove.to);
+      chess.remove(newMove.from);
+    }
     setFen(chess.fen());
+  };
+
+  const setPosition = (e) => {
+    const newPosition = JSON.parse(e.target.value);
+    console.log(newPosition.fen);
+    setFen(newPosition.fen);
+    chess.load(fen);
   };
 
   return (
@@ -110,8 +153,8 @@ export default function Conference() {
           handleMove({
             from: move.sourceSquare,
             to: move.targetSquare,
+            piece: move.piece,
             // This promotion attribute changes pawns to a queen if they reach the other side of the board.
-            promotion: 'q',
           })
         }
       />
@@ -138,6 +181,27 @@ export default function Conference() {
           Allumer/éteindre le micro
         </button>
       </aside>
+      <label htmlFor="cours" className={styles.chat__label}>
+        <span className="label">Choix de la leçon</span>
+        <select
+          id="cours"
+          name="lesson"
+          className={styles.chat__select}
+          onChange={(e) => setPosition(e)}
+        >
+          {exercises ? (
+            exercises.map((exercise) => (
+              <option key={exercise.id} value={exercise.content}>
+                {exercise.title}
+              </option>
+            ))
+          ) : (
+            <option key="0" disabled>
+              Oups les exercices se sont perdu...
+            </option>
+          )}
+        </select>
+      </label>
     </section>
   );
 }

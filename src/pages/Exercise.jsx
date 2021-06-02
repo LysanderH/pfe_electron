@@ -104,6 +104,7 @@ export default function Exercise() {
   }
 
   const handleMove = (newMove) => {
+    chess.load(fen);
     // const moves = chess.moves();
     const pieces = {
       wK: { type: chess.KING, color: chess.WHITE },
@@ -221,19 +222,21 @@ export default function Exercise() {
                 })
               }
             />
-            <button type="button" onClick={emptyBoard}>
-              Vider l’échiquier
-            </button>
-            <button type="submit" className="btn">
-              Enregistrer
-            </button>
-            <button
-              type="button"
-              className="btn--delete"
-              onClick={deleteExercise}
-            >
-              Supprimer
-            </button>
+            <div className={styles.new_exercise__buttons}>
+              <button type="submit" className="btn">
+                Enregistrer
+              </button>
+              <button type="button" onClick={emptyBoard} className="btn--add">
+                Vider l’échiquier
+              </button>
+              <button
+                type="button"
+                className="btn--delete"
+                onClick={deleteExercise}
+              >
+                Supprimer
+              </button>
+            </div>
           </div>
         </form>
       </section>

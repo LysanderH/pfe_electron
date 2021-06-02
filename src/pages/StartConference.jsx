@@ -7,20 +7,25 @@ import apiClient from '../utils/apiClient';
 export default function StartConference() {
   const [redirect, setRedirect] = useState(false);
   const [groups, setGroups] = useState([]);
+  const [lessons, setLessons] = useState([]);
   const [loading, setLoading] = useState(false);
+
   const startClass = (e) => {
     e.preventDefault();
-    const groupId = e.target.group.value;
-    sessionStorage.setItem('groupId', groupId);
+    const group = e.target.group.value;
+    const lesson = e.target.lesson.value;
+    sessionStorage.setItem('group', group);
+    sessionStorage.setItem('lesson', lesson);
     setRedirect(true);
   };
 
   useEffect(() => {
     setLoading(true);
     apiClient
-      .get('groups')
+      .get('video-conference')
       .then((response) => {
         setGroups(response.data.groups);
+        setLessons(response.data.lessons);
         setLoading(false);
         return null;
       })
@@ -43,6 +48,7 @@ export default function StartConference() {
           <h2 className={styles.start__heading}>Commencer une conférence</h2>
           <form className={styles.start__form} onSubmit={(e) => startClass(e)}>
             <label htmlFor="group" className={styles.start__label}>
+              <span className="label">Choix de la classe</span>
               <select
                 id="group"
                 name="group"
@@ -66,11 +72,24 @@ export default function StartConference() {
               </select>
             </label>
             <label htmlFor="cours" className={styles.start__label}>
-              <select id="cours" className={styles.start__select}>
-                <option key="1">Cours 22/03</option>
+              <span className="label">Choix de la leçon</span>
+              <select id="cours" name="lesson" className={styles.start__select}>
+                {lessons ? (
+                  lessons.map((lesson) => (
+                    <option key={lesson.id} value={lesson.id}>
+                      {lesson.title}
+                    </option>
+                  ))
+                ) : (
+                  <option key="0" disabled>
+                    Vous avez pas encore enregister de lessons
+                  </option>
+                )}
               </select>
             </label>
-            <button className="btn">Commencer</button>
+            <button type="submit" className="btn">
+              Commencer
+            </button>
           </form>
           <Link to="/" className="back">
             Retour
