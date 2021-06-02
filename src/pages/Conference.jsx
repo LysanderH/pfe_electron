@@ -188,7 +188,14 @@ export default function Conference() {
           name="lesson"
           className={styles.chat__select}
           onChange={(e) => setPosition(e)}
+          defaultValue="empty"
         >
+          <option
+            key="empty"
+            value={'{"fen":"8\\/8\\/8\\/8\\/8\\/8\\/8\\/8 w - - 0 1"}'}
+          >
+            Échiquier vide
+          </option>
           {exercises ? (
             exercises.map((exercise) => (
               <option key={exercise.id} value={exercise.content}>
