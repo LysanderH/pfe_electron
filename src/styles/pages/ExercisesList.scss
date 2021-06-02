@@ -3,6 +3,7 @@
   margin: 0 auto;
   display: grid;
   grid-template-areas: 'header header header''heading new label''list list list''pagination pagination pagination';
+  padding: 1rem;
 
   &__heading {
     grid-area: heading;
@@ -87,9 +88,15 @@
     display: flex;
     margin-top: 3rem;
     justify-content: center;
+    margin-bottom: 3rem;
 
-    a {
+    &__link {
       padding: 4px 8px;
+      text-decoration: underline;
+
+      &__active {
+        text-decoration: none;
+      }
     }
   }
 }

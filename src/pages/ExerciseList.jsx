@@ -1,4 +1,5 @@
 import axios from 'axios';
+import Chessboard from 'chessboardjsx';
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import styles from '../styles/pages/ExercisesList.scss';
@@ -9,38 +10,164 @@ export default function ExerciseList() {
   const [exercises, setExercises] = useState([]);
   const [links, setLinks] = useState([]);
   const [tactics, setTactics] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  const formatLinkArray = (rawLinks) => {
+    rawLinks.pop();
+    rawLinks.shift();
+    setLinks(rawLinks);
+  };
 
   useEffect(() => {
+    setLoading(true);
     apiClient
       .get('exercises')
       .then((response) => {
-        console.log(response);
         setExercises(response.data.exercises.data);
-        setLinks(response.data.exercises.links);
+        formatLinkArray(response.data.exercises.links);
         setTactics(response.data.tactics);
+        setLoading(false);
         return null;
       })
       .catch((error) => {
-        console.log(error);
+        setLoading(false);
       });
   }, []);
 
   const getExercisesByTactics = (e) => {
+    setLoading(true);
     e.preventDefault();
     apiClient
       .get(`exercises?tactic=${e.target.value}`)
       .then((response) => {
-        console.log(response);
         setExercises(response.data.exercises.data);
-        setLinks(response.data.exercises.links);
+        formatLinkArray(response.data.exercises.links);
+        setLoading(false);
         return null;
       })
       .catch((error) => {
-        console.log(error);
+        setLoading(false);
       });
   };
 
-  return (
+  const getExercises = (e, pageNum) => {
+    e.preventDefault();
+    setLoading(true);
+    apiClient
+      .get(`exercises?page=${pageNum}`)
+      .then((response) => {
+        setExercises(response.data.exercises.data);
+        formatLinkArray(response.data.exercises.links);
+        setTactics(response.data.tactics);
+        setLoading(false);
+        return null;
+      })
+      .catch((error) => {
+        setLoading(false);
+      });
+  };
+
+  const svgStyle = {
+    margin: 'auto',
+    background: 'transparent none repeat scroll 0% 0%',
+    display: 'block',
+    'shape-rendering': 'auto',
+  };
+
+  return loading ? (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      style={svgStyle}
+      width="200px"
+      height="200px"
+      viewBox="0 0 100 100"
+      preserveAspectRatio="xMidYMid"
+    >
+      <g>
+        <circle cx="60" cy="50" r="4" fill="#28292f">
+          <animate
+            attributeName="cx"
+            repeatCount="indefinite"
+            dur="1s"
+            values="95;35"
+            keyTimes="0;1"
+            begin="-0.67s"
+          />
+          <animate
+            attributeName="fill-opacity"
+            repeatCount="indefinite"
+            dur="1s"
+            values="0;1;1"
+            keyTimes="0;0.2;1"
+            begin="-0.67s"
+          />
+        </circle>
+        <circle cx="60" cy="50" r="4" fill="#28292f">
+          <animate
+            attributeName="cx"
+            repeatCount="indefinite"
+            dur="1s"
+            values="95;35"
+            keyTimes="0;1"
+            begin="-0.33s"
+          />
+          <animate
+            attributeName="fill-opacity"
+            repeatCount="indefinite"
+            dur="1s"
+            values="0;1;1"
+            keyTimes="0;0.2;1"
+            begin="-0.33s"
+          />
+        </circle>
+        <circle cx="60" cy="50" r="4" fill="#28292f">
+          <animate
+            attributeName="cx"
+            repeatCount="indefinite"
+            dur="1s"
+            values="95;35"
+            keyTimes="0;1"
+            begin="0s"
+          />
+          <animate
+            attributeName="fill-opacity"
+            repeatCount="indefinite"
+            dur="1s"
+            values="0;1;1"
+            keyTimes="0;0.2;1"
+            begin="0s"
+          />
+        </circle>
+      </g>
+      <g transform="translate(-15 0)">
+        <path
+          d="M50 50L20 50A30 30 0 0 0 80 50Z"
+          fill="#0a0a0a"
+          transform="rotate(90 50 50)"
+        />
+        <path d="M50 50L20 50A30 30 0 0 0 80 50Z" fill="#0a0a0a">
+          <animateTransform
+            attributeName="transform"
+            type="rotate"
+            repeatCount="indefinite"
+            dur="1s"
+            values="0 50 50;45 50 50;0 50 50"
+            keyTimes="0;0.5;1"
+          />
+        </path>
+        <path d="M50 50L20 50A30 30 0 0 1 80 50Z" fill="#0a0a0a">
+          <animateTransform
+            attributeName="transform"
+            type="rotate"
+            repeatCount="indefinite"
+            dur="1s"
+            values="0 50 50;-45 50 50;0 50 50"
+            keyTimes="0;0.5;1"
+          />
+        </path>
+      </g>
+    </svg>
+  ) : (
     <>
       <div className={styles.header}>
         <Link to="/">
@@ -76,6 +203,10 @@ export default function ExerciseList() {
             className={styles.exercises_list__select}
             onChange={(e) => getExercisesByTactics(e)}
           >
+            <option key={0} value="default">
+              Choix d’après la tactique
+            </option>
+
             {tactics.map((tactic) => (
               <option key={tactic.id}>{tactic.name}</option>
             ))}
@@ -83,22 +214,31 @@ export default function ExerciseList() {
         </label>
         <ul className={styles.exercises_list__list}>
           {exercises ? (
-            exercises.map((exercise) => (
+            exercises.map((exercise, index) => (
               <li className={styles.exercises_list__item} key={exercise.id}>
                 <Link
                   to={`exercises/show/${exercise.id}`}
                   className={styles.exercises_list__link}
                 >
-                  <img
-                    src="http://api.localhost/storage/img/exemple.png"
-                    alt="Positions des pièces"
-                    className={styles.exercises_list__img}
+                  <Chessboard
+                    id={index}
+                    position={JSON.parse(exercise.content).fen}
+                    width={300}
+                    draggable={false}
                   />
-                  <p className={styles.exercises_list__title}>Gain de pièce</p>
-                  <span className={styles.exercises_list__tag}>
-                    La fourchette
-                  </span>
-                  <div className={styles.exercises_list__color} />
+                  <p className={styles.exercises_list__title}>
+                    {exercise.title}
+                  </p>
+                  {exercise.tactics
+                    ? exercise.tactics.map((tactic) => (
+                        <span
+                          className={styles.exercises_list__tag}
+                          key={tactic.id}
+                        >
+                          {tactic.name}
+                        </span>
+                      ))
+                    : ''}
                 </Link>
               </li>
             ))
@@ -108,19 +248,26 @@ export default function ExerciseList() {
             </li>
           )}
         </ul>
-        {links.count > 3 ? (
+        {links.length > 1 ? (
           <ul className={styles.exercises_list__pagination}>
             {links.map((link, index) => (
               <li
-                className={styles.exercises_list__previous}
+                className={styles.exercises_list__pagination__item}
                 key={link.toString()}
               >
-                <Link to={link.url}>{link.label}</Link>
+                <button
+                  type="button"
+                  className={`${styles.exercises_list__pagination__link} ${
+                    link.active
+                      ? styles.exercises_list__pagination__link__active
+                      : ''
+                  }`}
+                  onClick={(e) => getExercises(e, link.label)}
+                >
+                  {link.label}
+                </button>
               </li>
             ))}
-            <li>
-              <Link to={`exercises/${PageIndex + 1}`}>Prochain</Link>
-            </li>
           </ul>
         ) : (
           ''
