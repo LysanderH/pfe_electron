@@ -19,6 +19,8 @@ import Conference from './pages/Conference';
 import Participate from './pages/Participate';
 import apiClient from './utils/apiClient';
 import Classe from './pages/Classe';
+import Lesson from './pages/Lesson';
+import CreateLesson from './pages/CreateLesson';
 
 /**
  * Main component
@@ -53,6 +55,8 @@ export default function App() {
           <Logout />
         </Route>
         <PrivateRoute path="/preferences" component={Preferences} />
+        <PrivateRoute path="/lessons/create" component={CreateLesson} />
+        <PrivateRoute path="/lessons/:id" component={Lesson} />
         <PrivateRoute path="/lessons" component={LessonList} />
         <PrivateRoute path="/classes/create" component={CreateClass} />
         <PrivateRoute path="/classes/:id" component={Classe} />

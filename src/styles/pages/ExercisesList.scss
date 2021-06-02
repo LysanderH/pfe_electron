@@ -62,6 +62,10 @@
       flex-direction: column;
       text-decoration: none;
     }
+
+    &__chosen {
+      border: 5px solid green;
+    }
   }
 
   &__img {
@@ -126,4 +130,13 @@
     margin-left: auto;
     align-self: auto;
   }
+}
+
+.exercises_choice_list {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  background-color: #fff;
+  min-height: 100%;
 }

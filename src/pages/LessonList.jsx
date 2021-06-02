@@ -1,18 +1,51 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import styles from '../styles/pages/LessonList.scss';
+import apiClient from '../utils/apiClient';
 
 export default function LessonList() {
-  // useEffect(() => {
-  //   apiClient
-  //     .get('courses')
-  //     .then((response) => {
-  //       setUser(response.data);
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //     });
-  // }, []);
+  const [lessons, setLessons] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [links, setLinks] = useState([]);
+
+  const formatLinkArray = (rawLinks) => {
+    rawLinks.pop();
+    rawLinks.shift();
+    setLinks(rawLinks);
+  };
+
+  useEffect(() => {
+    setLoading(true);
+    apiClient
+      .get('courses')
+      .then((response) => {
+        console.log(response);
+        setLessons(response.data.courses.data);
+        formatLinkArray(response.data.courses.links);
+        setLoading(false);
+        return null;
+      })
+      .catch((error) => {
+        setLoading(false);
+        console.log(error);
+      });
+  }, []);
+
+  const getLessons = (e, pageNum) => {
+    e.preventDefault();
+    setLoading(true);
+    apiClient
+      .get(`courses?page=${pageNum}`)
+      .then((response) => {
+        setLessons(response.data.courses.data);
+        formatLinkArray(response.data.courses.links);
+        setLoading(false);
+        return null;
+      })
+      .catch((error) => {
+        setLoading(false);
+      });
+  };
 
   return (
     <>
@@ -36,44 +69,58 @@ export default function LessonList() {
       </div>
       <section className={styles.lesson_list}>
         <h2 className={styles.lesson_list__heading}>Liste des lessons</h2>
-        <Link
-          href="/lesson/create"
-          className={`${styles.lesson_list__new} btn`}
-        >
+        <Link to="/lessons/create" className={`${styles.lesson_list__new} btn`}>
           Ajouter une nouvelle leçon
         </Link>
         <table className={styles.lesson_list__table}>
           <thead>
             <tr>
               <th scope="col">Nom</th>
-              <th scope="col">Date</th>
-              <th scope="col">Thème</th>
               <th scope="col">Actions</th>
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <th scope="row">Eynatten</th>
-              <td>10h00 21/01/2021</td>
-              <td>Mat avec roi et dame</td>
-              <td>
-                <Link href="/" className={`${styles.lesson_list__btn} btn`}>
-                  Voir la lesson<span className="sr-only"> Titre</span>
-                </Link>
-              </td>
-            </tr>
-            <tr>
-              <th scope="row">Eynatten 2</th>
-              <td>15h00 21/01/2021</td>
-              <td>Mat avec roi et dame</td>
-              <td>
-                <Link href="/" className={`${styles.lesson_list__btn} btn`}>
-                  Voir la lesson<span className="sr-only"> Titre</span>
-                </Link>
-              </td>
-            </tr>
+            {lessons
+              ? lessons.map((lesson) => (
+                  <tr key={lesson.id}>
+                    <th scope="row">{lesson.title}</th>
+                    <td>
+                      <Link
+                        to={`/lessons/${lesson.id}`}
+                        className={`${styles.lesson_list__btn} btn`}
+                      >
+                        Voir la lesson<span className="sr-only"> Titre</span>
+                      </Link>
+                    </td>
+                  </tr>
+                ))
+              : ''}
           </tbody>
         </table>
+        {links.length > 1 ? (
+          <ul className={styles.lesson_list__pagination}>
+            {links.map((link) => (
+              <li
+                className={styles.lesson_list__pagination__item}
+                key={link.id}
+              >
+                <button
+                  type="button"
+                  className={`${styles.lesson_list__pagination__link} ${
+                    link.active
+                      ? styles.lesson_list__pagination__link__active
+                      : ''
+                  }`}
+                  onClick={(e) => getLessons(e, link.label)}
+                >
+                  {link.label}
+                </button>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          ''
+        )}
       </section>
     </>
   );

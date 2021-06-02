@@ -203,6 +203,7 @@ export default function CreateExercise() {
                   dropOffBoard="trash"
                   sparePieces
                   className={styles.new_exercise__content}
+                  draggable
                   onDrop={(move) =>
                     handleMove({
                       from: move.sourceSquare,

@@ -15,20 +15,6 @@ export default function Menu() {
         <h2 className={styles.main_menu__heading}>Que voulez vous faire?</h2>
         <ul className={styles.main_menu__list}>
           <li className={styles.main_menu__item}>
-            <Link className="nav__link" to="/lessons">
-              <svg
-                enableBackground="new 0 0 512 512"
-                viewBox="0 0 512 512"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <g>
-                  <path d="m0 0v512h512v-512zm482 121h-91v-91h91zm-211 0v-91h90v91zm90 30v90h-90v-90zm-120-30h-90v-91h90zm0 30v90h-90v-90zm-120 90h-91v-90h91zm0 30v90h-91v-90zm30 0h90v90h-90zm90 120v91h-90v-91zm30 0h90v91h-90zm0-30v-90h90v90zm120-90h91v90h-91zm0-30v-90h91v90zm-270-211v91h-91v-91zm-91 361h91v91h-91zm361 91v-91h91v91z" />
-                </g>
-              </svg>
-              <span>Échiquier de démonstration</span>
-            </Link>
-          </li>
-          <li className={styles.main_menu__item}>
             <Link className="nav__link" to="/exercises">
               <svg
                 version="1.1"

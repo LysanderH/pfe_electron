@@ -76,10 +76,56 @@ option {
   @include roboto(16px, $text-white);
   transition: background 0.2s ease-in-out;
   align-self: flex-end;
-  margin-top: 1rem;
+  // margin-top: 1rem;
   cursor: pointer;
+  // display: flex;
+  // align-items: center;
+
+  svg {
+    fill: $text-white;
+    height: 15px;
+    width: 15px;
+    margin-right: 5px;
+  }
 
   &:hover {
     background: $btn-hover;
+  }
+}
+
+.btn--delete {
+  background-color: #DE3723;
+  margin-left: auto;
+  border-radius: 5px;
+  @include roboto(16px, $text-white);
+  padding: .4rem .6rem;
+  transition: background 0.2s ease-in-out;
+  cursor: pointer;
+
+  &:hover {
+    background: #a32416;
+  }
+}
+
+.btn--add {
+  background-color: #0374AD;
+  border-radius: 5px;
+  @include roboto(16px, $text-white);
+  padding: .4rem .6rem;
+  transition: background 0.2s ease-in-out;
+  cursor: pointer;
+  margin-left: .5rem;
+  display: flex;
+  align-items: center;
+
+  &:hover {
+    background: #05364e;
+  }
+
+  svg {
+    fill: $text-white;
+    height: 15px;
+    width: 15px;
+    margin-right: 5px;
   }
 }
