@@ -7,6 +7,7 @@ import apiClient from '../utils/apiClient';
 export default function Preferences() {
   const [user, setUser] = useState('');
   const [loading, setLoading] = useState(false);
+
   useEffect(() => {
     setLoading(true);
     apiClient
@@ -21,6 +22,38 @@ export default function Preferences() {
         console.log(error);
       });
   }, []);
+
+  const updateUser = (e) => {
+    e.preventDefault();
+    setLoading(true);
+
+    const name = e.target.name.value;
+    const email = e.target.email.value;
+    const password = e.target.password.value;
+    const newpassword = e.target.newpassword ? e.target.newpassword.value : '';
+    const newpasswordConfirmation = e.target.newpassword_confirmation
+      ? e.target.newpassword_confirmation.value
+      : '';
+
+    apiClient
+      .put(`users/${user.id}`, {
+        name,
+        email,
+        password,
+        newpassword,
+        newpassword_confirmation: newpasswordConfirmation,
+      })
+      .then((response) => {
+        setUser(response.data.user);
+        setLoading(false);
+        return null;
+      })
+      .catch((error) => {
+        setLoading(false);
+        console.log(error);
+      });
+  };
+
   return loading ? (
     <Loading />
   ) : (
@@ -44,7 +77,12 @@ export default function Preferences() {
         </Link>
       </div>
       <section className={styles.preferences}>
-        <form className={styles.preferences__form}>
+        <form
+          className={styles.preferences__form}
+          onSubmit={(e) => {
+            updateUser(e);
+          }}
+        >
           <label htmlFor="name" className={styles.preferences__label}>
             <span className="label">Nom</span>
             <input
@@ -53,6 +91,7 @@ export default function Preferences() {
               placeholder="Max Mustermann"
               name="name"
               defaultValue={user.name ?? ''}
+              required
             />
           </label>
           <label htmlFor="email" className={styles.preferences__label}>
@@ -63,15 +102,17 @@ export default function Preferences() {
               placeholder="exemple@mail.com"
               name="email"
               defaultValue={user.email ?? ''}
+              required
             />
           </label>
           <label htmlFor="password" className={styles.preferences__label}>
-            <span className="label">Ancien mot de passe</span>
+            <span className="label">Mot de passe courant</span>
             <input
               type="password"
               id="password"
               placeholder="**********"
               name="password"
+              required
             />
           </label>
           <label htmlFor="newpassword" className={styles.preferences__label}>
@@ -80,7 +121,7 @@ export default function Preferences() {
               type="password"
               id="newpassword"
               placeholder="***********"
-              name="password__confirmation"
+              name="newpassword"
             />
           </label>
           <label htmlFor="confirm" className={styles.preferences__label}>
@@ -89,7 +130,7 @@ export default function Preferences() {
               type="password"
               id="confirm"
               placeholder="**********"
-              name="confirm"
+              name="newpassword__confirmation"
             />
           </label>
           <button type="submit" className="btn">
