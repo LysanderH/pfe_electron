@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { Link, Redirect } from 'react-router-dom';
+import Loading from '../components/Loading';
 import styles from '../styles/pages/Start.scss';
 import apiClient from '../utils/apiClient';
 
 export default function StartConference() {
   const [redirect, setRedirect] = useState(false);
   const [groups, setGroups] = useState([]);
+  const [loading, setLoading] = useState(false);
   const startClass = (e) => {
     e.preventDefault();
     const groupId = e.target.group.value;
@@ -14,13 +16,16 @@ export default function StartConference() {
   };
 
   useEffect(() => {
+    setLoading(true);
     apiClient
       .get('groups')
       .then((response) => {
         setGroups(response.data.groups);
+        setLoading(false);
         return null;
       })
       .catch((error) => {
+        setLoading(false);
         console.log(error);
       });
   }, []);
@@ -29,7 +34,9 @@ export default function StartConference() {
     return <Redirect to="/conference" />;
   }
 
-  return (
+  return loading ? (
+    <Loading />
+  ) : (
     <>
       <div className={styles.background}>
         <section className={styles.start}>

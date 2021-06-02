@@ -1,22 +1,29 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import Loading from '../components/Loading';
 import styles from '../styles/pages/Preferences.scss';
 import apiClient from '../utils/apiClient';
 
 export default function Preferences() {
-  const [user, setUser] = useState({});
+  const [user, setUser] = useState('');
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
+    setLoading(true);
     apiClient
       .get('user')
       .then((response) => {
         setUser(response.data);
+        setLoading(false);
         return null;
       })
       .catch((error) => {
+        setLoading(false);
         console.log(error);
       });
   }, []);
-  return (
+  return loading ? (
+    <Loading />
+  ) : (
     <>
       <div className={styles.header}>
         <Link to="/">
