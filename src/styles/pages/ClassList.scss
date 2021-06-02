@@ -2,7 +2,8 @@
   max-width: 1633px;
   margin: 0 auto;
   display: grid;
-  grid-template-areas: 'header header' 'heading new' 'table table';
+  grid-template-areas: 'header header''heading new''table table''pagination pagination';
+  padding: 1rem;
 
   &__heading {
     grid-area: heading;
@@ -29,6 +30,10 @@
   &__btn {
     background: #05a081;
     text-decoration: none;
+    display: inline-block;
+    margin: 0 auto;
+    position: relative;
+    z-index: 10;
   }
 
   &__new {
@@ -40,6 +45,23 @@
 
   &__table {
     grid-area: table;
+  }
+
+  &__pagination {
+    grid-area: pagination;
+    display: flex;
+    margin-top: 3rem;
+    justify-content: center;
+    margin-bottom: 3rem;
+
+    &__link {
+      padding: 4px 8px;
+      text-decoration: underline;
+
+      &__active {
+        text-decoration: none;
+      }
+    }
   }
 }
 

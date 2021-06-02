@@ -1,17 +1,42 @@
-import React, { useState } from 'react';
-import { Link, Redirect } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Link, Redirect, useParams } from 'react-router-dom';
 import styles from '../styles/pages/CreateClass.scss';
 import apiClient from '../utils/apiClient';
 
 /**
  * Component to create a class with its students
  */
-export default function CreateClass() {
+export default function Classe() {
   const [students, setStudents] = useState([]);
   const [studentError, setStudentError] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState();
   const [redirect, setRedirect] = useState(false);
+  const { id } = useParams();
+  const [group, setGroup] = useState({});
+
+  useEffect(() => {
+    setLoading(true);
+    apiClient
+      .get(`groups/${id}`)
+      .then((response) => {
+        setGroup(response.data.group);
+        const { users } = response.data.group;
+        const userArray = users.filter(function (user) {
+          return user.pivot.is_teacher === 0;
+        });
+        const emailArray = [];
+        userArray.forEach((user) => {
+          emailArray.push(user.email);
+        });
+        setStudents(emailArray);
+        setLoading(false);
+        return null;
+      })
+      .catch(() => {
+        setLoading(false);
+      });
+  }, []);
 
   const newStudent = (e) => {
     e.preventDefault();
@@ -50,7 +75,7 @@ export default function CreateClass() {
       const name = e.target.name.value;
       const description = e.target.description.value;
       apiClient
-        .post('groups', {
+        .put(`groups/${id}`, {
           name,
           description,
           students,
@@ -70,6 +95,23 @@ export default function CreateClass() {
     }
   };
 
+  const deleteGroup = () => {
+    setLoading(true);
+    apiClient
+      .delete(`groups/${id}`)
+      .then((response) => {
+        setLoading(false);
+        setRedirect(true);
+        return null;
+      })
+      .catch((errors) => {
+        setLoading(false);
+        setError('L’exercice n’a pas pu être supprimer');
+        console.log(errors);
+      });
+    return null;
+  };
+
   const removeUser = (e, student) => {
     e.preventDefault();
     const users = students.slice();
@@ -78,23 +120,133 @@ export default function CreateClass() {
     setStudents(users);
   };
 
+  const svgStyle = {
+    margin: 'auto',
+    background: 'transparent none repeat scroll 0% 0%',
+    display: 'block',
+    'shape-rendering': 'auto',
+  };
+
   if (redirect) {
     return <Redirect to="/classes" />;
   }
 
-  return (
+  return loading ? (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      style={svgStyle}
+      width="200px"
+      height="200px"
+      viewBox="0 0 100 100"
+      preserveAspectRatio="xMidYMid"
+    >
+      <g>
+        <circle cx="60" cy="50" r="4" fill="#28292f">
+          <animate
+            attributeName="cx"
+            repeatCount="indefinite"
+            dur="1s"
+            values="95;35"
+            keyTimes="0;1"
+            begin="-0.67s"
+          />
+          <animate
+            attributeName="fill-opacity"
+            repeatCount="indefinite"
+            dur="1s"
+            values="0;1;1"
+            keyTimes="0;0.2;1"
+            begin="-0.67s"
+          />
+        </circle>
+        <circle cx="60" cy="50" r="4" fill="#28292f">
+          <animate
+            attributeName="cx"
+            repeatCount="indefinite"
+            dur="1s"
+            values="95;35"
+            keyTimes="0;1"
+            begin="-0.33s"
+          />
+          <animate
+            attributeName="fill-opacity"
+            repeatCount="indefinite"
+            dur="1s"
+            values="0;1;1"
+            keyTimes="0;0.2;1"
+            begin="-0.33s"
+          />
+        </circle>
+        <circle cx="60" cy="50" r="4" fill="#28292f">
+          <animate
+            attributeName="cx"
+            repeatCount="indefinite"
+            dur="1s"
+            values="95;35"
+            keyTimes="0;1"
+            begin="0s"
+          />
+          <animate
+            attributeName="fill-opacity"
+            repeatCount="indefinite"
+            dur="1s"
+            values="0;1;1"
+            keyTimes="0;0.2;1"
+            begin="0s"
+          />
+        </circle>
+      </g>
+      <g transform="translate(-15 0)">
+        <path
+          d="M50 50L20 50A30 30 0 0 0 80 50Z"
+          fill="#0a0a0a"
+          transform="rotate(90 50 50)"
+        />
+        <path d="M50 50L20 50A30 30 0 0 0 80 50Z" fill="#0a0a0a">
+          <animateTransform
+            attributeName="transform"
+            type="rotate"
+            repeatCount="indefinite"
+            dur="1s"
+            values="0 50 50;45 50 50;0 50 50"
+            keyTimes="0;0.5;1"
+          />
+        </path>
+        <path d="M50 50L20 50A30 30 0 0 1 80 50Z" fill="#0a0a0a">
+          <animateTransform
+            attributeName="transform"
+            type="rotate"
+            repeatCount="indefinite"
+            dur="1s"
+            values="0 50 50;-45 50 50;0 50 50"
+            keyTimes="0;0.5;1"
+          />
+        </path>
+      </g>
+    </svg>
+  ) : (
     <>
       <div className={styles.header}>
-        <Link to="/">
+        <Link to="/classes">
           <svg
-            height="384pt"
-            viewBox="0 -53 384 384"
-            width="384pt"
+            version="1.1"
+            id="Layer_1"
             xmlns="http://www.w3.org/2000/svg"
+            x="0px"
+            y="0px"
+            viewBox="0 0 492 492"
+            xmlSpace="preserve"
           >
-            <path d="m368 154.667969h-352c-8.832031 0-16-7.167969-16-16s7.167969-16 16-16h352c8.832031 0 16 7.167969 16 16s-7.167969 16-16 16zm0 0" />
-            <path d="m368 32h-352c-8.832031 0-16-7.167969-16-16s7.167969-16 16-16h352c8.832031 0 16 7.167969 16 16s-7.167969 16-16 16zm0 0" />
-            <path d="m368 277.332031h-352c-8.832031 0-16-7.167969-16-16s7.167969-16 16-16h352c8.832031 0 16 7.167969 16 16s-7.167969 16-16 16zm0 0" />
+            <g>
+              <g>
+                <path
+                  d="M198.608,246.104L382.664,62.04c5.068-5.056,7.856-11.816,7.856-19.024c0-7.212-2.788-13.968-7.856-19.032l-16.128-16.12
+			C361.476,2.792,354.712,0,347.504,0s-13.964,2.792-19.028,7.864L109.328,227.008c-5.084,5.08-7.868,11.868-7.848,19.084
+			c-0.02,7.248,2.76,14.028,7.848,19.112l218.944,218.932c5.064,5.072,11.82,7.864,19.032,7.864c7.208,0,13.964-2.792,19.032-7.864
+			l16.124-16.12c10.492-10.492,10.492-27.572,0-38.06L198.608,246.104z"
+                />
+              </g>
+            </g>
           </svg>
         </Link>
         <span className={styles.header__heading}>Chess Teaching Tool</span>
@@ -110,19 +262,32 @@ export default function CreateClass() {
         >
           <label htmlFor="name" className={styles.create_class__label}>
             <span className="label">Nom</span>
-            <input type="text" id="name" placeholder="Eynatten 1" name="name" />
+            <input
+              type="text"
+              id="name"
+              placeholder="Eynatten 1"
+              name="name"
+              defaultValue={group.name ?? ''}
+            />
           </label>
           <label htmlFor="message" className={styles.create_class__label}>
             <span className="label">Votre message</span>
             <textarea
               id="message"
-              placeholder="Eynatten 1"
+              placeholder="Note"
               name="description"
-              defaultValue="Dernier cours le 20.02"
+              defaultValue={group.description ?? ''}
             />
           </label>
           <button type="submit" className="btn form__submit">
             Enregistrer la classe
+          </button>
+          <button
+            type="button"
+            className="btn btn--delete"
+            onClick={deleteGroup}
+          >
+            Supprimer
           </button>
         </form>
         <form

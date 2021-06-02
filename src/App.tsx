@@ -13,12 +13,12 @@ import CreateExercise from './pages/CreateExercise';
 import ClassList from './pages/ClassList';
 import Preferences from './pages/Preferences';
 import CreateClass from './pages/CreateClass';
-import MyClass from './pages/MyClass';
 import Logout from './utils/Logout';
 import StartConference from './pages/StartConference';
 import Conference from './pages/Conference';
 import Participate from './pages/Participate';
 import apiClient from './utils/apiClient';
+import Classe from './pages/Classe';
 
 /**
  * Main component
@@ -33,7 +33,6 @@ export default function App() {
   const login = (user) => {
     setUser(user);
     apiClient.defaults.headers.common.Authorization = `Bearer ${user}`;
-    console.log(apiClient.defaults.headers);
 
     sessionStorage.setItem('user', user);
     sessionStorage.setItem('loggedIn', true);
@@ -56,10 +55,10 @@ export default function App() {
         <PrivateRoute path="/preferences" component={Preferences} />
         <PrivateRoute path="/lessons" component={LessonList} />
         <PrivateRoute path="/classes/create" component={CreateClass} />
-        <PrivateRoute path="/classes/show" component={MyClass} />
+        <PrivateRoute path="/classes/:id" component={Classe} />
         <PrivateRoute path="/classes" component={ClassList} />
         <PrivateRoute path="/exercises/create" component={CreateExercise} />
-        <PrivateRoute path="/exercises/show" component={Exercise} />
+        <PrivateRoute path="/exercises/show/:id" component={Exercise} />
         <PrivateRoute path="/exercises" component={ExerciseList} />
         <PrivateRoute path="/start-conference" component={StartConference} />
         <PrivateRoute path="/participate-conference" component={Participate} />
