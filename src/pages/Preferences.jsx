@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Loading from '../components/Loading';
-import styles from '../styles/pages/Preferences.scss';
+import styles from '../styles/pages/preferences.module.scss';
 import apiClient from '../utils/apiClient';
 
 export default function Preferences() {

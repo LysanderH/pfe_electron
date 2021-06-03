@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, Redirect } from 'react-router-dom';
-import styles from '../styles/pages/CreateClass.scss';
+import styles from '../styles/pages/createClass.module.scss';
 import apiClient from '../utils/apiClient';
 
 /**
@@ -121,7 +121,7 @@ export default function CreateClass() {
               defaultValue="Dernier cours le 20.02"
             />
           </label>
-          <button type="submit" className="btn form__submit">
+          <button type="submit" className="btn btn--submit form__submit">
             Enregistrer la classe
           </button>
         </form>

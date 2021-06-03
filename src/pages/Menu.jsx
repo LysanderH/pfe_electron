@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import styles from '../styles/pages/Mainmenu.scss';
+import styles from '../styles/pages/mainmenu.module.scss';
 
 export default function Menu() {
   return (

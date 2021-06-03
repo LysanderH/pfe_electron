@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import sideImg from '../../assets/img/login.jpg';
-import styles from '../styles/pages/Login.scss';
+import styles from '../styles/pages/login.module.scss';
 import apiClient from '../utils/apiClient';
 import Loading from '../components/Loading';
 
@@ -200,7 +200,7 @@ export default function Login(props) {
         <Link to="/register" className={styles.login__item}>
           Je n’ai pas de compte
         </Link>
-        <Link to="/reset-password" className={styles.login__item}>
+        <Link to="/forgot-password" className={styles.login__item}>
           J’ai ouvlié mon mot de passe
         </Link>
       </nav>

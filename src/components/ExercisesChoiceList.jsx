@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Loading from './Loading';
-import styles from '../styles/pages/ExercisesList.scss';
+import styles from '../styles/pages/exercisesList.module.scss';
 import apiClient from '../utils/apiClient';
 
 export default function ExerciseChoiceList(props) {

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Loading from '../components/Loading';
-import styles from '../styles/pages/ClassList.scss';
+import styles from '../styles/pages/classList.module.scss';
 import apiClient from '../utils/apiClient';
 
 export default function ClassList() {
@@ -46,13 +46,6 @@ export default function ClassList() {
       .catch((error) => {
         setLoading(false);
       });
-  };
-
-  const svgStyle = {
-    margin: 'auto',
-    background: 'transparent none repeat scroll 0% 0%',
-    display: 'block',
-    'shape-rendering': 'auto',
   };
 
   return loading ? (

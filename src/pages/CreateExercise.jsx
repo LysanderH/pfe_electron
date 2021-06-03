@@ -2,7 +2,7 @@ import Chessboard from 'chessboardjsx';
 import React, { useEffect, useState } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import Loading from '../components/Loading';
-import styles from '../styles/pages/CreateExercise.scss';
+import styles from '../styles/pages/createExercise.module.scss';
 import apiClient from '../utils/apiClient';
 
 const Chess = require('chess.js');
@@ -15,6 +15,7 @@ export default function CreateExercise() {
   const [chess] = useState(new Chess('8/8/8/8/8/8/8/8 w - - 0 1'));
   const [fen, setFen] = useState(chess.fen());
   const [error, setError] = useState();
+  const [redirect, setRedirect] = useState(false);
 
   const storeExercise = (e) => {
     e.preventDefault();
@@ -34,6 +35,7 @@ export default function CreateExercise() {
         })
         .then((response) => {
           setLoading(false);
+          setRedirect(true);
           console.log(response);
           return null;
         })
@@ -71,7 +73,11 @@ export default function CreateExercise() {
   };
 
   if (errorRedirect) {
-    <Redirect to="/" />;
+    return <Redirect to="/" />;
+  }
+
+  if (redirect) {
+    return <Redirect to="/exercises" />;
   }
 
   const handleMove = (newMove) => {
@@ -119,16 +125,26 @@ export default function CreateExercise() {
   ) : (
     <>
       <div className={styles.header}>
-        <Link to="/">
+        <Link to="/exercises">
           <svg
-            height="384pt"
-            viewBox="0 -53 384 384"
-            width="384pt"
+            version="1.1"
+            id="Layer_1"
             xmlns="http://www.w3.org/2000/svg"
+            x="0px"
+            y="0px"
+            viewBox="0 0 492 492"
+            xmlSpace="preserve"
           >
-            <path d="m368 154.667969h-352c-8.832031 0-16-7.167969-16-16s7.167969-16 16-16h352c8.832031 0 16 7.167969 16 16s-7.167969 16-16 16zm0 0" />
-            <path d="m368 32h-352c-8.832031 0-16-7.167969-16-16s7.167969-16 16-16h352c8.832031 0 16 7.167969 16 16s-7.167969 16-16 16zm0 0" />
-            <path d="m368 277.332031h-352c-8.832031 0-16-7.167969-16-16s7.167969-16 16-16h352c8.832031 0 16 7.167969 16 16s-7.167969 16-16 16zm0 0" />
+            <g>
+              <g>
+                <path
+                  d="M198.608,246.104L382.664,62.04c5.068-5.056,7.856-11.816,7.856-19.024c0-7.212-2.788-13.968-7.856-19.032l-16.128-16.12
+			C361.476,2.792,354.712,0,347.504,0s-13.964,2.792-19.028,7.864L109.328,227.008c-5.084,5.08-7.868,11.868-7.848,19.084
+			c-0.02,7.248,2.76,14.028,7.848,19.112l218.944,218.932c5.064,5.072,11.82,7.864,19.032,7.864c7.208,0,13.964-2.792,19.032-7.864
+			l16.124-16.12c10.492-10.492,10.492-27.572,0-38.06L198.608,246.104z"
+                />
+              </g>
+            </g>
           </svg>
         </Link>
         <span className={styles.header__heading}>Chess Teaching Tool</span>

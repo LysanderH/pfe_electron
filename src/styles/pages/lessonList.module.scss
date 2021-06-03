@@ -3,6 +3,7 @@
   margin: 0 auto;
   display: grid;
   grid-template-areas: 'header header''heading new''table table''pagination pagination';
+  padding: 0 1rem;
 
   &__heading {
     grid-area: heading;

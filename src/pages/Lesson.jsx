@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import Chessboard from 'chessboardjsx';
 import Loading from '../components/Loading';
 import apiClient from '../utils/apiClient';
-import styles from '../styles/pages/CreateLesson.scss';
+import styles from '../styles/pages/createLesson.module.scss';
 import ExerciseChoiceList from '../components/ExercisesChoiceList';
 
 export default function Lesson() {

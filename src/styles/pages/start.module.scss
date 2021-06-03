@@ -2,6 +2,22 @@
   width: 600px;
   margin: auto;
 
+  &__heading {
+    grid-area: heading;
+    font-family: 'Roboto', sans-serif;
+    font-size: 48px;
+    font-weight: 900;
+    margin: 32px auto;
+  }
+
+  &__btn {
+    margin-left: auto;
+  }
+
+  &__btns {
+    display: flex;
+  }
+
   &__form {
     display: flex;
     flex-direction: column;

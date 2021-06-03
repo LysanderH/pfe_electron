@@ -2,7 +2,7 @@ import Chessboard from 'chessboardjsx';
 import React, { useEffect, useState } from 'react';
 import { Link, Redirect, useParams } from 'react-router-dom';
 import Loading from '../components/Loading';
-import styles from '../styles/pages/CreateExercise.scss';
+import styles from '../styles/pages/createExercise.module.scss';
 import apiClient from '../utils/apiClient';
 
 const Chess = require('chess.js');

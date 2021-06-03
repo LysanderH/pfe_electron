@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import sideImg from '../../assets/img/login.jpg';
-import styles from '../styles/pages/Register.scss';
+import styles from '../styles/pages/register.module.scss';
 import apiClient from '../utils/apiClient';
 import Loading from '../components/Loading';
 
@@ -235,7 +235,6 @@ export default function Register(props) {
                 <svg
                   className={styles.register__toggl}
                   version="1.1"
-                  id="Capa_1"
                   xmlns="http://www.w3.org/2000/svg"
                   x="0px"
                   y="0px"
@@ -267,7 +266,6 @@ export default function Register(props) {
               ) : (
                 <svg
                   version="1.1"
-                  id="Capa_1"
                   xmlns="http://www.w3.org/2000/svg"
                   x="0px"
                   y="0px"
@@ -305,11 +303,11 @@ export default function Register(props) {
       </form>
       <nav className={styles.register__nav}>
         <h3 className="sr-only">Navigation de connexion</h3>
-        <Link to="/register" className={styles.register__item}>
+        <Link to="/login" className={styles.register__item}>
           J’ai déjà un compte
         </Link>
-        <Link to="/reset-password" className={styles.register__item}>
-          J’ai ouvlié mon mot de passe
+        <Link to="/forgot-password" className={styles.register__item}>
+          J’ai oublié mon mot de passe
         </Link>
       </nav>
       <figure className={styles.register__figure}>

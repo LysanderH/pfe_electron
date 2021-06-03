@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import styles from '../styles/pages/LessonList.scss';
+import styles from '../styles/pages/lessonList.module.scss';
 import apiClient from '../utils/apiClient';
 
 export default function LessonList() {

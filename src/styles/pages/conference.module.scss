@@ -1,0 +1,53 @@
+.chat {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-areas: 'title title''chessboard video''controls chat';
+  grid-gap: 1rem;
+  width: 100%;
+  padding: 1rem;
+  overflow: hidden;
+
+  &__title {
+    grid-area: title;
+    margin-bottom: 1.5rem;
+    font-family: 'Roboto', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 900;
+    margin: .5rem 2rem;
+  }
+
+  &__video {
+    grid-area: video;
+
+    iframe {
+      max-width: 100%;
+    }
+  }
+
+  &__controls {
+    grid-area: controls;
+    display: flex;
+    flex-direction: row;
+  }
+
+  &__chessboard {
+    grid-area: chessboard;
+  }
+
+  &__button {
+    background-color: #DE3723;
+    border-radius: 5px;
+    padding: .4rem .6rem;
+    color: #fff;
+    transition: background 0.2s ease-in-out;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+
+    svg {
+      fill: #fff;
+      height: 1.3rem;
+      margin-right: 5px;
+    }
+  }
+}

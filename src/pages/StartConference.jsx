@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import Loading from '../components/Loading';
-import styles from '../styles/pages/Start.scss';
+import styles from '../styles/pages/start.module.scss';
 import apiClient from '../utils/apiClient';
 
 export default function StartConference() {
@@ -87,13 +87,15 @@ export default function StartConference() {
                 )}
               </select>
             </label>
-            <button type="submit" className="btn">
-              Commencer
-            </button>
+            <div className={styles.start__btns}>
+              <Link to="/" className="back">
+                Retour
+              </Link>
+              <button type="submit" className={`${styles.start__btn} btn`}>
+                Commencer
+              </button>
+            </div>
           </form>
-          <Link to="/" className="back">
-            Retour
-          </Link>
         </section>
       </div>
     </>

@@ -10,8 +10,8 @@ import firebase from '../utils/firebaseConfig';
 
 const Chess = require('chess.js');
 
-export default function Conference() {
-  const [roomId, setRoomId] = useState('');
+export default function ConferenceStudent() {
+  const [roomId, setRoomId] = useState(sessionStorage.getItem('roomId'));
   const [jitsi, setJitsi] = useState({});
   const [user, setUser] = useState();
   const [exercises, setExercises] = useState([]);
@@ -60,29 +60,32 @@ export default function Conference() {
     setJitsi(api);
   };
 
-  const setFirebaseConnection = (roomId) => {
-    const connection = firebase
+  const setFirebaseConnection = (docRef) => {
+    firebase
       .firestore()
       .collection('rooms')
-      .where('roomId', '==', roomId)
+      .doc(docRef)
       .onSnapshot((snap) => {
-        snap.forEach((doc) => {
-          setFen(doc.data().fen);
-        });
+        console.log('snap', snap.data());
+        setFen(snap.data().fen);
       });
   };
 
   const pushToFirebase = (newRoomId) => {
+    console.log('pushData');
     firebase
       .firestore()
       .collection('rooms')
-      .add({
-        fen: chess.fen(),
-        RoomId: newRoomId,
-      })
-      .then((docRef) => {
-        setDocId(docRef.id);
-        setFirebaseConnection(roomId);
+      .where('RoomId', '==', newRoomId * 1)
+      .get()
+      .then((querySnapshot) => {
+        console.log(querySnapshot);
+        querySnapshot.forEach((doc) => {
+          setDocId(doc.id);
+          setFen(doc.data().fen);
+          console.log(doc.id, ' => ', doc.data());
+          setFirebaseConnection(doc.id);
+        });
         return null;
       })
       .catch((error) => {
@@ -106,19 +109,12 @@ export default function Conference() {
 
   useEffect(() => {
     apiClient
-      .post('/rooms', {
-        offerer: JSON.stringify({}),
-        group: sessionStorage.getItem('group'),
-        lesson: sessionStorage.getItem('lesson'),
-      })
+      .get('/user')
       .then((response) => {
-        setRoomId(response.data.room.id);
-        setUser(response.data.user.name);
-        setExercises(response.data.exercises);
-        sessionStorage.setItem('roomId', response.data.room.id);
-        initialiseJitsi(response.data.room.id, response.data.user);
+        setUser(response.data.name);
+        initialiseJitsi(sessionStorage.getItem('roomId'), response.data);
 
-        pushToFirebase(response.data.room.id);
+        pushToFirebase(sessionStorage.getItem('roomId'));
         return null;
       })
       .catch((error) => console.error(error));
@@ -187,12 +183,11 @@ export default function Conference() {
     setRedirect(true);
   };
 
-  const svgStyle = { 'enable-background': 'new 0 0 512 512' };
-
   if (redirect) {
     return <Redirect to="/" />;
   }
 
+  const svgStyle = { 'enable-background': 'new 0 0 512 512' };
   return (
     <section className={styles.chat}>
       <h2 className={styles.chat__title}>
@@ -247,34 +242,6 @@ export default function Conference() {
           Finir la session
         </button>
       </aside>
-      <label htmlFor="cours" className={styles.chat__label}>
-        <span className="label">Choix de la leçon</span>
-        <select
-          id="cours"
-          name="lesson"
-          className={styles.chat__select}
-          onChange={(e) => setPosition(e)}
-          defaultValue="empty"
-        >
-          <option
-            key="empty"
-            value={'{"fen":"8\\/8\\/8\\/8\\/8\\/8\\/8\\/8 w - - 0 1"}'}
-          >
-            Échiquier vide
-          </option>
-          {exercises ? (
-            exercises.map((exercise) => (
-              <option key={exercise.id} value={exercise.content}>
-                {exercise.title}
-              </option>
-            ))
-          ) : (
-            <option key="0" disabled>
-              Oups les exercices se sont perdu...
-            </option>
-          )}
-        </select>
-      </label>
     </section>
   );
 }

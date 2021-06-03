@@ -21,6 +21,8 @@ import apiClient from './utils/apiClient';
 import Classe from './pages/Classe';
 import Lesson from './pages/Lesson';
 import CreateLesson from './pages/CreateLesson';
+import ConferenceStudent from './pages/ConferenceStudent';
+import ForgotPassword from './pages/ForgotPassword';
 
 /**
  * Main component
@@ -48,6 +50,9 @@ export default function App() {
         <Route path="/login">
           <Login login={login} />
         </Route>
+        <Route path="/forgot-password">
+          <ForgotPassword />
+        </Route>
         <Route path="/register" component={Register}>
           <Register login={login} />
         </Route>
@@ -66,6 +71,10 @@ export default function App() {
         <PrivateRoute path="/exercises" component={ExerciseList} />
         <PrivateRoute path="/start-conference" component={StartConference} />
         <PrivateRoute path="/participate-conference" component={Participate} />
+        <PrivateRoute
+          path="/conference-student"
+          component={ConferenceStudent}
+        />
         <PrivateRoute path="/conference" component={Conference} />
         <PrivateRoute path="/" component={Menu} />
       </Switch>
