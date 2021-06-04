@@ -9,6 +9,7 @@ export default function StartConference() {
   const [groups, setGroups] = useState([]);
   const [lessons, setLessons] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [errorRedirect, setErrorRedirect] = useState(false);
 
   const startClass = (e) => {
     e.preventDefault();
@@ -27,6 +28,9 @@ export default function StartConference() {
         setGroups(response.data.groups);
         setLessons(response.data.lessons);
         setLoading(false);
+        if (!response.data.groups.length && !response.data.lessons.length) {
+          setErrorRedirect(true);
+        }
         return null;
       })
       .catch((error) => {
@@ -37,6 +41,9 @@ export default function StartConference() {
 
   if (redirect) {
     return <Redirect to="/conference" />;
+  }
+  if (errorRedirect) {
+    return <Redirect to="/" />;
   }
 
   return loading ? (

@@ -51,13 +51,15 @@ export default function Participate() {
                 placeholder="123"
               />
             </label>
-            <button type="submit" className="btn">
-              Joindre
-            </button>
+            <div className={styles.start__btns}>
+              <Link to="/" className="back">
+                Retour
+              </Link>
+              <button type="submit" className={`${styles.start__btn} btn`}>
+                Commencer
+              </button>
+            </div>
           </form>
-          <Link to="/" className="back">
-            Retour
-          </Link>
         </section>
       </div>
     </>
