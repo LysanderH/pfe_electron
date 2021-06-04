@@ -72,6 +72,11 @@
     flex-direction: column;
     align-items: center;
   }
+
+  &__error {
+    color: #DE3723;
+    line-height: 1.4;
+  }
 }
 
 .header {

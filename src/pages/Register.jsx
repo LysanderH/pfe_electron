@@ -38,56 +38,65 @@ export default function Register(props) {
   const submitRegister = (e) => {
     e.preventDefault();
     setLoadingStatus(true);
+    setError('');
 
     const name = e.target.name.value;
-    const nameRegEx = /^[A-Za-z]+$/;
+    const nameRegEx = /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$/u;
     if (!nameRegEx.test(name)) {
       setLoadingStatus(false);
-      return setError('Le nom ne peux pas contenir des schiffres.');
+      return setError({
+        name: [
+          'Le nom ne peux pas contenir des schiffres ou de caractères spécials.',
+        ],
+      });
     }
 
     const email = e.target.email.value;
     if (!validateEmail(email)) {
       setLoadingStatus(false);
-      return setError(
-        'Veuillez mettre une adresse email au format example@mail.com'
-      );
+      return setError({
+        email: ['Veuillez mettre une adresse email au format example@mail.com'],
+      });
     }
 
     const password = e.target.password.value;
     if (password.length < 8) {
       setLoadingStatus(false);
-      return setError('Le mot de passe doit contenir 8 caractères.');
+      return setError({
+        password: ['Le mot de passe doit contenir 8 caractères.'],
+      });
     }
 
     const checkPassword = e.target.check_password.value;
     if (checkPassword !== password) {
       setLoadingStatus(false);
-      return setError('Le mot de passe n’est pas égal');
+      return setError({
+        checkPassword: ['Les mots de passe ne correspondes pas.'],
+      });
     }
 
-    apiClient
-      .post('sanctum/register', {
-        name,
-        email,
-        password,
-        password_confirmation: checkPassword,
-        device_name: 'Chess Teaching Tool',
-      })
-      .then((response) => {
-        props.login(response.data);
-        setRedirect(true);
-        setLoadingStatus(false);
-        return null;
-      })
-      .catch((errors) => {
-        setLoadingStatus(false);
-        setError(
-          errors.response.data.errors.message ??
-            'Une erreur vient de se produire'
-        );
-      });
-
+    if (!error) {
+      apiClient
+        .post('sanctum/register', {
+          name,
+          email,
+          password,
+          password_confirmation: checkPassword,
+          device_name: 'Chess Teaching Tool',
+        })
+        .then((response) => {
+          props.login(response.data);
+          setRedirect(true);
+          setLoadingStatus(false);
+          return null;
+        })
+        .catch((errors) => {
+          setLoadingStatus(false);
+          console.log(errors.response.data.errors.email);
+          setError(errors.response.data.errors ?? '');
+        });
+    }
+    setLoadingStatus(false);
     return null;
   };
 
@@ -116,11 +125,6 @@ export default function Register(props) {
         }}
         className={styles.register__form}
       >
-        {error ? (
-          <p className={styles.login__error}>
-            Les identifiants ne sont pas correct
-          </p>
-        ) : null}
         <label htmlFor="name" className={styles.register__label}>
           <span className="label">Nom</span>
           <input
@@ -138,6 +142,13 @@ export default function Register(props) {
             placeholder="exemple@mail.com"
             name="email"
           />
+          {error.email
+            ? error.email.map((err) => (
+                <p className={styles.register__error} key={err}>
+                  {err}
+                </p>
+              ))
+            : null}
         </label>
         <label htmlFor="password" className={styles.register__label}>
           <span className="label">Password</span>
@@ -218,6 +229,13 @@ export default function Register(props) {
               )}
             </button>
           </div>
+          {error.password
+            ? error.password.map((err) => (
+                <p className={styles.register__error} key={err}>
+                  {err}
+                </p>
+              ))
+            : null}
         </label>
         <label htmlFor="check_password" className={styles.register__label}>
           <span className="label">Password</span>
@@ -296,6 +314,13 @@ export default function Register(props) {
               )}
             </button>
           </div>
+          {error.checkPassword
+            ? error.checkPassword.map((err) => (
+                <p className={styles.register__error} key={err}>
+                  {err}
+                </p>
+              ))
+            : null}
         </label>
         <button type="submit" className="btn btn--submit">
           Se connecter

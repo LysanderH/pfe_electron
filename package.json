@@ -30,7 +30,7 @@
     ]
   },
   "build": {
-    "productName": "ElectronReact",
+    "productName": "ChessTeachingTool",
     "appId": "org.erb.ElectronReact",
     "files": [
       "dist/",
