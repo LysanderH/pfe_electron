@@ -182,12 +182,12 @@ export default function Classe() {
               defaultValue={group.description ?? ''}
             />
           </label>
-          <button type="submit" className="btn form__submit">
+          <button type="submit" className="btn btn--submit">
             Enregistrer la classe
           </button>
           <button
             type="button"
-            className="btn btn--delete"
+            className="btn btn--delete mt"
             onClick={deleteGroup}
           >
             Supprimer

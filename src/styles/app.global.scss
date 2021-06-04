@@ -11,7 +11,6 @@ $input-background: #e4e4e4;
 $btn: #05a081;
 $btn-hover: #03745d;
 
-// TODO remove
 html {
   background: white;
 }
@@ -109,6 +108,10 @@ option {
   &:hover {
     background: #a32416;
   }
+}
+
+.mt {
+  margin-top: 1rem;
 }
 
 .btn--add {

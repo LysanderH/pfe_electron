@@ -26,7 +26,6 @@ export default function Exercise() {
     const tactic = e.target.tactic.value;
     const fenInput = e.target.fen ? e.target.fen.value : fen;
     const title = e.target.title.value ?? 'Exercice';
-    console.log(fenInput);
 
     if (chess.validate_fen(fenInput)) {
       apiClient
@@ -75,11 +74,12 @@ export default function Exercise() {
     apiClient
       .get(`exercises/${id}`)
       .then((response) => {
+        console.log(response.data);
+
         setLoading(false);
         setTactics(response.data.tactics);
         setExercise(response.data.exercise);
-        setFen(JSON.parse(response.data.exercise.content).fen ?? '');
-        console.log(response.data.exercise);
+        setFen(JSON.parse(response.data.exercise.content).fen);
         return null;
       })
       .catch(() => {
@@ -87,13 +87,6 @@ export default function Exercise() {
         setErrorRedirect(true);
       });
   }, []);
-
-  const svgStyle = {
-    margin: 'auto',
-    background: 'transparent none repeat scroll 0% 0%',
-    display: 'block',
-    'shape-rendering': 'auto',
-  };
 
   if (errorRedirect) {
     <Redirect to="/" />;
