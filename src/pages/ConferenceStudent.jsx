@@ -100,7 +100,7 @@ export default function ConferenceStudent() {
       .doc(docId)
       .update({
         fen: chess.fen(),
-        roomId,
+        RoomId: roomId,
       })
       .catch((error) => {
         console.error('Error updating document: ', error);
@@ -159,8 +159,8 @@ export default function ConferenceStudent() {
       }
     } else {
       chess.remove(newMove.to);
-      chess.put(pieces[newMove.piece], newMove.to);
       chess.remove(newMove.from);
+      chess.put(pieces[newMove.piece], newMove.to);
     }
 
     setFen(chess.fen());

@@ -142,7 +142,7 @@ export default function Lesson() {
             </Link>
           </div>
           <section className={styles.new_lesson}>
-            <h2 className={styles.new_lesson__heading}>Modifier la lesson</h2>
+            <h2 className={styles.new_lesson__heading}>Modifier la leçon</h2>
             <form
               className={styles.new_lesson__form}
               onSubmit={(e) => updateLesson(e)}
@@ -159,7 +159,7 @@ export default function Lesson() {
                   />
                 </label>
                 <label htmlFor="message" className={styles.new_lesson__label}>
-                  <span className="label">Votre message</span>
+                  <span className="label">Vos notes</span>
                   <textarea
                     id="message"
                     placeholder="Note"

@@ -80,21 +80,33 @@ export default function LessonList() {
             </tr>
           </thead>
           <tbody>
-            {lessons
-              ? lessons.map((lesson) => (
-                  <tr key={lesson.id}>
-                    <th scope="row">{lesson.title}</th>
-                    <td>
-                      <Link
-                        to={`/lessons/${lesson.id}`}
-                        className={`${styles.lesson_list__btn} btn`}
-                      >
-                        Voir la lesson<span className="sr-only"> Titre</span>
-                      </Link>
-                    </td>
-                  </tr>
-                ))
-              : ''}
+            {lessons.length ? (
+              lessons.map((lesson) => (
+                <tr key={lesson.id}>
+                  <th scope="row">{lesson.title}</th>
+                  <td>
+                    <Link
+                      to={`/lessons/${lesson.id}`}
+                      className={`${styles.lesson_list__btn} btn`}
+                    >
+                      Voir la lesson<span className="sr-only"> Titre</span>
+                    </Link>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr key="1">
+                <th scope="row">Vous n’avez pas encore de leçon</th>
+                <td>
+                  <Link
+                    to="/lessons/create"
+                    className={`${styles.lesson_list__btn} btn`}
+                  >
+                    Créer une lesson<span className="sr-only"> Titre</span>
+                  </Link>
+                </td>
+              </tr>
+            )}
           </tbody>
         </table>
         {links.length > 1 ? (

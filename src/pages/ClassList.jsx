@@ -87,20 +87,35 @@ export default function ClassList() {
             </tr>
           </thead>
           <tbody>
-            {groups.map((group, key) => (
-              <tr key={group.id}>
-                <th scope="row">{group.name}</th>
-                <td>{group.users ? group.users.length - 1 : '0'}</td>
+            {groups.length ? (
+              groups.map((group, key) => (
+                <tr key={group.id}>
+                  <th scope="row">{group.name}</th>
+                  <td>{group.users ? group.users.length - 1 : '0'}</td>
+                  <td>
+                    <Link
+                      to={`/classes/${group.id}`}
+                      className={`${styles.classes_list__btn} btn`}
+                    >
+                      Voir la classe
+                      <span className="sr-only"> {group.name}</span>
+                    </Link>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr key="1">
+                <th scope="row">Vous avez pas encore de classes</th>
                 <td>
                   <Link
-                    to={`/classes/${group.id}`}
+                    to="/classes/create"
                     className={`${styles.classes_list__btn} btn`}
                   >
-                    Voir la classe<span className="sr-only"> Titre</span>
+                    Créer une classe
                   </Link>
                 </td>
               </tr>
-            ))}
+            )}
           </tbody>
         </table>
         {links.length > 1 ? (

@@ -122,7 +122,7 @@ export default function CreateClass() {
             <input type="text" id="name" placeholder="Eynatten 1" name="name" />
           </label>
           <label htmlFor="message" className={styles.create_class__label}>
-            <span className="label">Votre message</span>
+            <span className="label">Vos notes</span>
             <textarea
               id="message"
               placeholder="Eynatten 1"
@@ -143,7 +143,7 @@ export default function CreateClass() {
             <input
               type="email"
               id="users"
-              placeholder="Eynatten 1"
+              placeholder="exemple@mail.com"
               name="name"
             />
           </label>

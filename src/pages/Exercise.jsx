@@ -18,6 +18,7 @@ export default function Exercise() {
   const { id } = useParams();
   const [exercise, setExercise] = useState({});
   const [success, setSuccess] = useState(false);
+  const [exerciseTactic, setExerciseTactic] = useState('');
 
   const storeExercise = (e) => {
     e.preventDefault();
@@ -40,6 +41,12 @@ export default function Exercise() {
           setExercise(response.data.exercise);
           setFen(JSON.parse(response.data.exercise.content).fen ?? '');
           setSuccess(true);
+          if (response.data.exercise.tactics) {
+            response.data.exercise.tactics.forEach((element) => {
+              setExerciseTactic(element.name);
+              console.log(element.name);
+            });
+          }
           return null;
         })
         .catch((errors) => {
@@ -77,6 +84,12 @@ export default function Exercise() {
         console.log(response.data);
 
         setLoading(false);
+        if (response.data.exercise.tactics) {
+          response.data.exercise.tactics.forEach((element) => {
+            setExerciseTactic(element.name);
+            console.log(element.name);
+          });
+        }
         setTactics(response.data.tactics);
         setExercise(response.data.exercise);
         setFen(JSON.parse(response.data.exercise.content).fen);
@@ -98,7 +111,7 @@ export default function Exercise() {
 
   const handleMove = (newMove) => {
     chess.load(fen);
-    // const moves = chess.moves();
+
     const pieces = {
       wK: { type: chess.KING, color: chess.WHITE },
       bK: { type: chess.KING, color: chess.BLACK },
@@ -126,8 +139,8 @@ export default function Exercise() {
       }
     } else {
       chess.remove(newMove.to);
-      chess.put(pieces[newMove.piece], newMove.to);
       chess.remove(newMove.from);
+      chess.put(pieces[newMove.piece], newMove.to);
     }
     setFen(chess.fen());
   };
@@ -135,6 +148,10 @@ export default function Exercise() {
   const emptyBoard = () => {
     chess.clear();
     setFen(chess.fen());
+  };
+
+  const setSelected = (e) => {
+    setExerciseTactic(e.target.value);
   };
 
   return loading ? (
@@ -192,7 +209,8 @@ export default function Exercise() {
                 id="choice"
                 className={styles.new_exercise__select}
                 name="tactic"
-                defaultValue={exercise.tactics ? exercise.tactics[0].name : ''}
+                value={exerciseTactic ?? ''}
+                onChange={(e) => setSelected(e)}
               >
                 {tactics.map((tactic) => (
                   <option value={tactic.name} key={tactic.id}>

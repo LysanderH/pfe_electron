@@ -45,6 +45,10 @@ textarea {
   padding: 0.8em;
 }
 
+textarea {
+  resize: none;
+}
+
 select {
   @include roboto(16px, $text-color);
 

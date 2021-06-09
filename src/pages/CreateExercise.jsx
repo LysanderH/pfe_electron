@@ -81,6 +81,7 @@ export default function CreateExercise() {
   }
 
   const handleMove = (newMove) => {
+    chess.load(fen);
     // const moves = chess.moves();
     const pieces = {
       wK: { type: chess.KING, color: chess.WHITE },
@@ -109,8 +110,8 @@ export default function CreateExercise() {
       }
     } else {
       chess.remove(newMove.to);
-      chess.put(pieces[newMove.piece], newMove.to);
       chess.remove(newMove.from);
+      chess.put(pieces[newMove.piece], newMove.to);
     }
     setFen(chess.fen());
   };

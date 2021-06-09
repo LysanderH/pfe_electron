@@ -99,7 +99,7 @@ export default function ExerciseChoiceList(props) {
             </g>
           </svg>
         </button>
-        <span className={styles.header__heading}>Chess Teaching Tool</span>
+        <span className={styles.header__heading}>Retour à la leçon</span>
       </div>
       <section className={styles.exercises_list}>
         <h2 className={styles.exercises_list__heading}>

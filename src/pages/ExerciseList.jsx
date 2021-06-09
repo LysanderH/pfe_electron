@@ -12,6 +12,7 @@ export default function ExerciseList() {
   const [links, setLinks] = useState([]);
   const [tactics, setTactics] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [selectedValue, setSelectedValue] = useState('');
 
   const formatLinkArray = (rawLinks) => {
     rawLinks.pop();
@@ -38,17 +39,33 @@ export default function ExerciseList() {
   const getExercisesByTactics = (e) => {
     setLoading(true);
     e.preventDefault();
-    apiClient
-      .get(`exercises?tactic=${e.target.value}`)
-      .then((response) => {
-        setExercises(response.data.exercises.data);
-        formatLinkArray(response.data.exercises.links);
-        setLoading(false);
-        return null;
-      })
-      .catch((error) => {
-        setLoading(false);
-      });
+    setSelectedValue(e.target.value);
+    if (e.target.value !== 'default') {
+      apiClient
+        .get(`exercises?tactic=${e.target.value}`)
+        .then((response) => {
+          setExercises(response.data.exercises.data);
+          formatLinkArray(response.data.exercises.links);
+          setLoading(false);
+          return null;
+        })
+        .catch((error) => {
+          setLoading(false);
+        });
+    } else {
+      apiClient
+        .get('exercises')
+        .then((response) => {
+          setExercises(response.data.exercises.data);
+          formatLinkArray(response.data.exercises.links);
+          setTactics(response.data.tactics);
+          setLoading(false);
+          return null;
+        })
+        .catch((error) => {
+          setLoading(false);
+        });
+    }
   };
 
   const getExercises = (e, pageNum) => {
@@ -105,6 +122,7 @@ export default function ExerciseList() {
             id="choice"
             className={styles.exercises_list__select}
             onChange={(e) => getExercisesByTactics(e)}
+            value={selectedValue}
           >
             <option key={0} value="default">
               Choix d’après la tactique
@@ -116,7 +134,7 @@ export default function ExerciseList() {
           </select>
         </label>
         <ul className={styles.exercises_list__list}>
-          {exercises ? (
+          {exercises.length ? (
             exercises.map((exercise, index) => (
               <li className={styles.exercises_list__item} key={exercise.id}>
                 <Link
@@ -148,6 +166,12 @@ export default function ExerciseList() {
           ) : (
             <li className={styles.exercises_list__item}>
               Il n’y a pas encore d’exercices
+              <Link
+                to="/exercises/create"
+                className={`${styles.exercises_list__new} btn`}
+              >
+                Créer un exercice
+              </Link>
             </li>
           )}
         </ul>

@@ -105,7 +105,7 @@ export default function Menu() {
                   \
                 </g>
               </svg>
-              <span>Mes cours</span>
+              <span>Mes leçons</span>
             </Link>
           </li>
           <li className={styles.main_menu__item}>

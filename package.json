@@ -31,7 +31,7 @@
   },
   "build": {
     "productName": "ChessTeachingTool",
-    "appId": "org.erb.ElectronReact",
+    "appId": "org.erb.ChessTeachingTool",
     "files": [
       "dist/",
       "node_modules/",
@@ -68,7 +68,8 @@
     "win": {
       "target": [
         "nsis"
-      ]
+      ],
+      "publisherName": "Hans Lysander"
     },
     "linux": {
       "target": [

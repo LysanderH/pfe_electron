@@ -64,7 +64,7 @@ export default function Conference() {
     const connection = firebase
       .firestore()
       .collection('rooms')
-      .where('roomId', '==', roomId)
+      .where('RoomId', '==', roomId)
       .onSnapshot((snap) => {
         snap.forEach((doc) => {
           setFen(doc.data().fen);
@@ -97,7 +97,7 @@ export default function Conference() {
       .doc(docId)
       .update({
         fen: chess.fen(),
-        roomId,
+        RoomId: roomId,
       })
       .catch((error) => {
         console.error('Error updating document: ', error);
@@ -130,9 +130,6 @@ export default function Conference() {
     JitsiMeetAPI.executeCommand('toggleVideo');
   };
 
-  const toggleVideo = (e) => {};
-  const toggleMic = (e) => {};
-
   const handleMove = (newMove) => {
     chess.load(fen);
 
@@ -163,8 +160,8 @@ export default function Conference() {
       }
     } else {
       chess.remove(newMove.to);
-      chess.put(pieces[newMove.piece], newMove.to);
       chess.remove(newMove.from);
+      chess.put(pieces[newMove.piece], newMove.to);
     }
 
     setFen(chess.fen());

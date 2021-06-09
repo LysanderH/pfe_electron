@@ -202,7 +202,7 @@ export default function Classe() {
             <input
               type="email"
               id="users"
-              placeholder="Eynatten 1"
+              placeholder="exemple@mail.com"
               name="name"
             />
           </label>
