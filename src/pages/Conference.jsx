@@ -64,7 +64,7 @@ export default function Conference() {
     const connection = firebase
       .firestore()
       .collection('rooms')
-      .where('RoomId', '==', roomId)
+      .where('RoomId', '==', Number(roomId))
       .onSnapshot((snap) => {
         snap.forEach((doc) => {
           setFen(doc.data().fen);
@@ -78,7 +78,7 @@ export default function Conference() {
       .collection('rooms')
       .add({
         fen: chess.fen(),
-        RoomId: newRoomId,
+        RoomId: Number(newRoomId),
       })
       .then((docRef) => {
         setDocId(docRef.id);
@@ -97,7 +97,7 @@ export default function Conference() {
       .doc(docId)
       .update({
         fen: chess.fen(),
-        RoomId: roomId,
+        RoomId: Number(roomId),
       })
       .catch((error) => {
         console.error('Error updating document: ', error);

@@ -61,6 +61,7 @@ export default function ConferenceStudent() {
   };
 
   const setFirebaseConnection = (docRef) => {
+    console.log(docRef);
     firebase
       .firestore()
       .collection('rooms')
@@ -72,21 +73,20 @@ export default function ConferenceStudent() {
   };
 
   const pushToFirebase = (newRoomId) => {
-    console.log('pushData');
+    console.log('pushData', newRoomId);
     firebase
       .firestore()
       .collection('rooms')
-      .where('RoomId', '==', newRoomId * 1)
+      .where('RoomId', '==', Number(newRoomId))
       .get()
       .then((querySnapshot) => {
-        console.log(querySnapshot);
         querySnapshot.forEach((doc) => {
+          console.log(doc);
           setDocId(doc.id);
           setFen(doc.data().fen);
-          console.log(doc.id, ' => ', doc.data());
           setFirebaseConnection(doc.id);
         });
-        return null;
+        // return null;
       })
       .catch((error) => {
         console.error('Error writing document: ', error);
@@ -94,13 +94,14 @@ export default function ConferenceStudent() {
   };
 
   const updateFirestore = () => {
+    console.log(roomId);
     firebase
       .firestore()
       .collection('rooms')
       .doc(docId)
       .update({
         fen: chess.fen(),
-        RoomId: roomId,
+        RoomId: Number(roomId),
       })
       .catch((error) => {
         console.error('Error updating document: ', error);
@@ -113,7 +114,7 @@ export default function ConferenceStudent() {
       .then((response) => {
         setUser(response.data.name);
         initialiseJitsi(sessionStorage.getItem('roomId'), response.data);
-
+        setRoomId(sessionStorage.getItem('roomId'));
         pushToFirebase(sessionStorage.getItem('roomId'));
         return null;
       })
