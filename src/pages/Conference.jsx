@@ -60,11 +60,12 @@ export default function Conference() {
     setJitsi(api);
   };
 
-  const setFirebaseConnection = (roomId) => {
+  const setFirebaseConnection = (newRoomId) => {
+    console.log(roomId);
     const connection = firebase
       .firestore()
       .collection('rooms')
-      .where('RoomId', '==', Number(roomId))
+      .where('RoomId', '==', Number(newRoomId))
       .onSnapshot((snap) => {
         snap.forEach((doc) => {
           setFen(doc.data().fen);
@@ -82,7 +83,7 @@ export default function Conference() {
       })
       .then((docRef) => {
         setDocId(docRef.id);
-        setFirebaseConnection(roomId);
+        setFirebaseConnection(newRoomId);
         return null;
       })
       .catch((error) => {
