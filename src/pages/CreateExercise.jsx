@@ -82,7 +82,7 @@ export default function CreateExercise() {
 
   const handleMove = (newMove) => {
     chess.load(fen);
-    // const moves = chess.moves();
+
     const pieces = {
       wK: { type: chess.KING, color: chess.WHITE },
       bK: { type: chess.KING, color: chess.BLACK },
@@ -150,6 +150,14 @@ export default function CreateExercise() {
         </Link>
         <span className={styles.header__heading}>Chess Teaching Tool</span>
         <Link to="/logout" className={`${styles.header__btn} btn`}>
+          <svg
+            height="512pt"
+            viewBox="0 0 512 512"
+            width="512pt"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path d="m320.820312 371.792969h39.980469v79.957031c0 33.066406-26.902343 59.964844-59.96875 59.964844h-240.867187c-33.0625 0-59.964844-26.898438-59.964844-59.964844v-391.785156c0-33.0625 26.902344-59.964844 59.964844-59.964844h240.867187c33.066407 0 59.96875 26.902344 59.96875 59.964844v79.957031h-39.980469v-79.957031c0-11.019532-8.964843-19.988282-19.988281-19.988282h-240.867187c-11.019532 0-19.988282 8.96875-19.988282 19.988282v391.785156c0 11.019531 8.96875 19.988281 19.988282 19.988281h240.867187c11.023438 0 19.988281-8.96875 19.988281-19.988281zm96.949219-210.167969-28.269531 28.269531 45.972656 45.976563h-258.570312v39.976562h258.570312l-45.972656 45.972656 28.269531 28.269532 94.230469-94.230469zm0 0" />
+          </svg>
           Se déconnecter
         </Link>
       </div>
@@ -226,18 +234,24 @@ export default function CreateExercise() {
                       from: move.sourceSquare,
                       to: move.targetSquare,
                       piece: move.piece,
-                      // This promotion attribute changes pawns to a queen if they reach the other side of the board.
                     })
                   }
                 />
-                <button type="button" onClick={emptyBoard}>
+                <button
+                  type="button"
+                  onClick={emptyBoard}
+                  className={`${styles.new_exercise__empty_board} btn--add`}
+                >
                   Vider l’échiquier
                 </button>
               </>
             ) : (
               ''
             )}
-            <button type="submit" className="btn">
+            <button
+              type="submit"
+              className={`${styles.new_exercise__save} btn`}
+            >
               Enregistrer
             </button>
           </div>

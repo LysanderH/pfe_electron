@@ -26,6 +26,15 @@
     align-items: flex-end;
   }
 
+  &__empty_board {
+    grid-area: 3/2;
+    justify-self: start;
+  }
+
+  &__save {
+    grid-area: 3/1;
+  }
+
   &__form_head {
     display: flex;
   }
@@ -80,5 +89,12 @@
     text-decoration: none;
     margin-left: auto;
     align-self: auto;
+    display: flex;
+    align-items: center;
+
+    svg {
+      height: 15px;
+      width: 15px;
+    }
   }
 }

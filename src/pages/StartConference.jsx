@@ -28,6 +28,7 @@ export default function StartConference() {
         setGroups(response.data.groups);
         setLessons(response.data.lessons);
         setLoading(false);
+
         if (!response.data.groups.length && !response.data.lessons.length) {
           setErrorRedirect(true);
         }
@@ -65,7 +66,7 @@ export default function StartConference() {
                 <option key="group" disabled>
                   Choisir un groupe
                 </option>
-                {groups ? (
+                {groups.length ? (
                   groups.map((group) => (
                     <option key={group.id} value={group.id}>
                       {group.name}
@@ -78,10 +79,18 @@ export default function StartConference() {
                 )}
               </select>
             </label>
+            {groups.length ? (
+              ''
+            ) : (
+              <p>
+                Vous n’avez pas de groupes, veuillez en créer{' '}
+                <Link to="/classes/create">ici.</Link>
+              </p>
+            )}
             <label htmlFor="cours" className={styles.start__label}>
               <span className="label">Choix de la leçon</span>
               <select id="cours" name="lesson" className={styles.start__select}>
-                {lessons ? (
+                {lessons.length ? (
                   lessons.map((lesson) => (
                     <option key={lesson.id} value={lesson.id}>
                       {lesson.title}
@@ -94,13 +103,25 @@ export default function StartConference() {
                 )}
               </select>
             </label>
+            {lessons.length ? (
+              ''
+            ) : (
+              <p>
+                Vous n’avez pas de groupes, veuillez en créer{' '}
+                <Link to="/lessons/create">ici.</Link>
+              </p>
+            )}
             <div className={styles.start__btns}>
               <Link to="/" className="back">
                 Retour
               </Link>
-              <button type="submit" className={`${styles.start__btn} btn`}>
-                Commencer
-              </button>
+              {lessons.length && groups.length ? (
+                <button type="submit" className={`${styles.start__btn} btn`}>
+                  Commencer
+                </button>
+              ) : (
+                ''
+              )}
             </div>
           </form>
         </section>

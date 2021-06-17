@@ -30,8 +30,6 @@ export default function ExerciseChoiceList(props) {
         formatLinkArray(response.data.exercises.links);
         setTactics(response.data.tactics);
         setLoading(false);
-        console.log(chosenExercises);
-        console.log(exercises);
         return null;
       })
       .catch((error) => {

@@ -58,6 +58,13 @@
   display: flex;
   align-items: center;
 
+  svg {
+    fill: #fff;
+    height: 32px;
+    width: 40px;
+    margin-right: 16px;
+  }
+
   &__heading {
     font-size: 24px;
     font-weight: 900;
@@ -68,5 +75,12 @@
     text-decoration: none;
     margin-left: auto;
     align-self: auto;
+    display: flex;
+    align-items: center;
+
+    svg {
+      height: 15px;
+      width: 15px;
+    }
   }
 }

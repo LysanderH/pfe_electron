@@ -194,7 +194,7 @@ export default function Conference() {
   return (
     <section className={styles.chat}>
       <h2 className={styles.chat__title}>
-        Identifiant de conférence&nbsp;: {roomId ?? ''}
+        Identifiant de conférence&nbsp;: {roomId ?? ' charge...'}
       </h2>
       <div
         id={jitsiContainerId}
@@ -210,7 +210,6 @@ export default function Conference() {
             from: move.sourceSquare,
             to: move.targetSquare,
             piece: move.piece,
-            // This promotion attribute changes pawns to a queen if they reach the other side of the board.
           })
         }
       />
@@ -254,6 +253,14 @@ export default function Conference() {
           onChange={(e) => setPosition(e)}
           defaultValue="empty"
         >
+          <option
+            key="start-position"
+            value={
+              '{"fen":"rnbqkbnr\\/pppppppp\\/8\\/8\\/8\\/8\\/PPPPPPPP\\/RNBQKBNR w KQkq - 0 1"}'
+            }
+          >
+            Échiquier vide
+          </option>
           <option
             key="empty"
             value={'{"fen":"8\\/8\\/8\\/8\\/8\\/8\\/8\\/8 w - - 0 1"}'}

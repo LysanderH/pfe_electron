@@ -13,6 +13,7 @@ $btn-hover: #03745d;
 
 html {
   background: white;
+  position: relative;
 }
 
 p,
@@ -139,4 +140,8 @@ option {
     width: 15px;
     margin-right: 5px;
   }
+}
+
+button:hover {
+  cursor: pointer;
 }

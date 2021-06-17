@@ -23,12 +23,14 @@ import Lesson from './pages/Lesson';
 import CreateLesson from './pages/CreateLesson';
 import ConferenceStudent from './pages/ConferenceStudent';
 import ForgotPassword from './pages/ForgotPassword';
+import Offline from './components/Offline';
 
 /**
  * Main component
  */
 export default function App() {
   const [user, setUser] = useState();
+  const [online, setOnline] = useState(true);
   /**
    * Sets the state loggedIn to true
    * @set sessionStorage loggedIn
@@ -42,10 +44,16 @@ export default function App() {
     sessionStorage.setItem('loggedIn', true);
   };
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setOnline(window.navigator.onLine);
+    }, 3000);
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <Router>
+      {!online ? <Offline /> : ''}
       <Switch>
         <Route path="/login">
           <Login login={login} />

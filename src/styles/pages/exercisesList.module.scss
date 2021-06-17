@@ -139,6 +139,13 @@
     text-decoration: none;
     margin-left: auto;
     align-self: auto;
+    display: flex;
+    align-items: center;
+
+    svg {
+      height: 15px;
+      width: 15px;
+    }
   }
 }
 
