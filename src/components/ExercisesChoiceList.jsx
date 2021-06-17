@@ -98,6 +98,13 @@ export default function ExerciseChoiceList(props) {
           </svg>
         </button>
         <span className={styles.header__heading}>Retour à la leçon</span>
+        <button
+          type="button"
+          className={`${styles.header__btn} btn`}
+          onClick={toggleExercisesChoiceList}
+        >
+          Continuer
+        </button>
       </div>
       <section className={styles.exercises_list}>
         <h2 className={styles.exercises_list__heading}>
@@ -119,7 +126,7 @@ export default function ExerciseChoiceList(props) {
           </select>
         </label>
         <ul className={styles.exercises_list__list}>
-          {exercises ? (
+          {exercises.length ? (
             exercises.map((exercise, index) => (
               <li
                 className={`${styles.exercises_list__item} ${

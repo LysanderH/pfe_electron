@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import Loading from '../components/Loading';
 import styles from '../styles/pages/preferences.module.scss';
 import apiClient from '../utils/apiClient';
@@ -7,6 +7,13 @@ import apiClient from '../utils/apiClient';
 export default function Preferences() {
   const [user, setUser] = useState('');
   const [loading, setLoading] = useState(false);
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmNewPassword, setConfirmNewPassword] = useState('');
+  const [error, setError] = useState(false);
+  const [redirect, setRedirect] = useState(false);
 
   useEffect(() => {
     setLoading(true);
@@ -17,42 +24,110 @@ export default function Preferences() {
         setLoading(false);
         return null;
       })
-      .catch((error) => {
+      .catch((err) => {
         setLoading(false);
-        console.log(error);
+        console.log(err);
       });
   }, []);
+
+  /**
+   * Check if email is correctly formatted
+   *
+   * @param {string} mail
+   * @returns boolean
+   */
+  function validateEmail(mail) {
+    console.log(mail);
+    const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(mail).toLowerCase());
+  }
 
   const updateUser = (e) => {
     e.preventDefault();
     setLoading(true);
+    setError(false);
 
-    const name = e.target.name.value;
-    const email = e.target.email.value;
-    const password = e.target.password.value;
-    const newpassword = e.target.newpassword ? e.target.newpassword.value : '';
-    const newpasswordConfirmation = e.target.newpassword_confirmation
-      ? e.target.newpassword_confirmation.value
-      : '';
+    setName(e.target.name.value);
+    setEmail(e.target.email.value);
+    setPassword(e.target.password.value);
+    setNewPassword(e.target.newpassword ? e.target.newpassword.value : '');
+    setConfirmNewPassword(
+      e.target.newpassword_confirmation
+        ? e.target.newpassword_confirmation.value
+        : ''
+    );
 
-    apiClient
-      .put(`users/${user.id}`, {
-        name,
-        email,
-        password,
-        newpassword,
-        newpassword_confirmation: newpasswordConfirmation,
-      })
-      .then((response) => {
-        setUser(response.data.user);
-        setLoading(false);
-        return null;
-      })
-      .catch((error) => {
-        setLoading(false);
-        console.log(error);
+    if (e.target.name.value.length < 1) {
+      setLoading(false);
+      setError({ name: 'Il faut donner un nom correct' });
+    }
+
+    if (!validateEmail(e.target.email.value)) {
+      setLoading(false);
+      return setError({
+        email: 'Veuillez mettre une adresse email au format example@mail.com',
       });
+    }
+
+    if (e.target.password.value.length < 1) {
+      setLoading(false);
+      return setError({
+        password: 'Veuillez mettre votre mot de passe actuel',
+      });
+    }
+    console.log(
+      newPassword.length > 0,
+      newPassword.length < 8,
+      newPassword.length > 0 && newPassword.length < 8
+    );
+
+    if (
+      e.target.newpassword.value.length > 0 &&
+      e.target.newpassword.value.length < 8
+    ) {
+      setLoading(false);
+      return setError({
+        newPassword: 'Le mot de passe doit contenir 8 caractères',
+      });
+    }
+
+    console.log(e.target.newpassword.value.length, `c${confirmNewPassword}`);
+
+    if (
+      e.target.newpassword.value !== e.target.newpassword_confirmation.value
+    ) {
+      setLoading(false);
+      return setError({
+        confirmNewPassword: 'Le mot de passe ne correspond pas',
+      });
+    }
+
+    if (!error) {
+      apiClient
+        .put(`users/${user.id}`, {
+          name: e.target.name.value,
+          email: e.target.email.value,
+          password: e.target.password.value,
+          newpassword: e.target.newpassword.value,
+          newpassword_confirmation: e.target.newpassword_confirmation.value,
+        })
+        .then((response) => {
+          setLoading(false);
+          setUser(response.data.user);
+          setRedirect(true);
+          return null;
+        })
+        .catch((err) => {
+          setLoading(false);
+          setError(err.response.data.errors ?? '');
+        });
+    }
+    setLoading(false);
   };
+
+  if (redirect) {
+    return <Redirect to="/" />;
+  }
 
   return loading ? (
     <Loading />
@@ -101,6 +176,13 @@ export default function Preferences() {
               defaultValue={user.name ?? ''}
               required
             />
+            {error ? (
+              error.name ? (
+                <p className={styles.register__error}>{error.name}</p>
+              ) : (
+                ''
+              )
+            ) : null}
           </label>
           <label htmlFor="email" className={styles.preferences__label}>
             <span className="label">Email</span>
@@ -112,6 +194,13 @@ export default function Preferences() {
               defaultValue={user.email ?? ''}
               required
             />
+            {error ? (
+              error.email ? (
+                <p className={styles.register__error}>{error.email}</p>
+              ) : (
+                ''
+              )
+            ) : null}
           </label>
           <label htmlFor="password" className={styles.preferences__label}>
             <span className="label">Mot de passe courant</span>
@@ -120,8 +209,16 @@ export default function Preferences() {
               id="password"
               placeholder="**********"
               name="password"
+              defaultValue={password ?? ''}
               required
             />
+            {error ? (
+              error.password ? (
+                <p className={styles.register__error}>{error.password}</p>
+              ) : (
+                ''
+              )
+            ) : null}
           </label>
           <label htmlFor="newpassword" className={styles.preferences__label}>
             <span className="label">Nouveau mot de passe</span>
@@ -129,17 +226,35 @@ export default function Preferences() {
               type="password"
               id="newpassword"
               placeholder="***********"
+              defaultValue={newPassword ?? ''}
               name="newpassword"
             />
+            {error ? (
+              error.newPassword ? (
+                <p className={styles.register__error}>{error.newPassword}</p>
+              ) : (
+                ''
+              )
+            ) : null}
           </label>
           <label htmlFor="confirm" className={styles.preferences__label}>
             <span className="label">confirmer le mot de passe</span>
             <input
               type="password"
               id="confirm"
+              defaultValue={confirmNewPassword ?? ''}
               placeholder="**********"
-              name="newpassword__confirmation"
+              name="newpassword_confirmation"
             />
+            {error ? (
+              error.confirmNewPassword ? (
+                <p className={styles.register__error}>
+                  {error.confirmNewPassword}
+                </p>
+              ) : (
+                ''
+              )
+            ) : null}
           </label>
           <button type="submit" className="btn">
             Enregistrer

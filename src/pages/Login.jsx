@@ -11,6 +11,7 @@ export default function Login(props) {
   const [error, setError] = useState('');
   const [loadingStatus, setLoadingStatus] = useState(false);
   const [redirect, setRedirect] = useState(false);
+  const [mail, setMail] = useState();
 
   const showPassword = () => {
     setPasswordShown(!passwordShown);
@@ -33,7 +34,7 @@ export default function Login(props) {
     setLoadingStatus(true);
 
     const email = e.target.email.value;
-
+    setMail(email);
     if (!validateEmail(email)) {
       setLoadingStatus(false);
       return setError(
@@ -105,6 +106,7 @@ export default function Login(props) {
             id="email"
             placeholder="exemple@mail.com"
             name="email"
+            defaultValue={mail}
           />
         </label>
         <label htmlFor="password" className={styles.login__label}>

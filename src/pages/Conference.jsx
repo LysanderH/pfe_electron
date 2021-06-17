@@ -259,7 +259,7 @@ export default function Conference() {
               '{"fen":"rnbqkbnr\\/pppppppp\\/8\\/8\\/8\\/8\\/PPPPPPPP\\/RNBQKBNR w KQkq - 0 1"}'
             }
           >
-            Échiquier vide
+            Position initiale
           </option>
           <option
             key="empty"

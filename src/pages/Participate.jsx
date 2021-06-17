@@ -7,6 +7,7 @@ import apiClient from '../utils/apiClient';
 export default function Participate() {
   const [loading, setLoading] = useState(false);
   const [redirect, setRedirect] = useState(false);
+  const [valError, setValError] = useState(false);
   const startClass = (e) => {
     e.preventDefault();
     setLoading(true);
@@ -24,6 +25,7 @@ export default function Participate() {
       })
       .catch((error) => {
         setLoading(false);
+        setValError(true);
         console.log(error);
       });
   };
@@ -40,6 +42,11 @@ export default function Participate() {
         <section className={styles.start}>
           <h2 className={styles.start__heading}>Participer à une conférence</h2>
           <form className={styles.start__form} onSubmit={(e) => startClass(e)}>
+            {valError ? (
+              <p className={styles.start__error}>Cette classe n’existe pas</p>
+            ) : (
+              ''
+            )}
             <label htmlFor="roomId" className={styles.start__label}>
               <span className="label">Numéro de la conférence</span>
               <input

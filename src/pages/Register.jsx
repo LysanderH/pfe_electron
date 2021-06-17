@@ -132,6 +132,7 @@ export default function Register(props) {
             id="name"
             placeholder="Max Mustermann"
             name="name"
+            required
           />
         </label>
         <label htmlFor="email" className={styles.register__label}>
@@ -141,6 +142,7 @@ export default function Register(props) {
             id="email"
             placeholder="exemple@mail.com"
             name="email"
+            required
           />
           {error.email
             ? error.email.map((err) => (
@@ -159,6 +161,7 @@ export default function Register(props) {
               name="password"
               placeholder="Mot de passe"
               className={styles.register__pwd_input}
+              required
             />
             <button type="button" onClick={showPassword}>
               <span className="sr-only">Afficher le mot de passe</span>
@@ -246,6 +249,7 @@ export default function Register(props) {
               name="check_password"
               placeholder="Mot de passe"
               className={styles.register__pwd_input}
+              required
             />
             <button type="button" onClick={showCheckPassword}>
               <span className="sr-only">Afficher le mot de passe</span>

@@ -5,6 +5,7 @@ import Loading from '../components/Loading';
 import styles from '../styles/pages/createExercise.module.scss';
 import apiClient from '../utils/apiClient';
 
+const { shell } = require('electron');
 const Chess = require('chess.js');
 
 export default function CreateExercise() {
@@ -70,6 +71,12 @@ export default function CreateExercise() {
     background: 'transparent none repeat scroll 0% 0%',
     display: 'block',
     'shape-rendering': 'auto',
+  };
+
+  const openExternalLink = () => {
+    shell.openExternal(
+      'https://fr.wikipedia.org/wiki/Notation_Forsyth-Edwards'
+    );
   };
 
   if (errorRedirect) {
@@ -209,7 +216,17 @@ export default function CreateExercise() {
 
             {type === 'fen' ? (
               <label htmlFor="fen" className={styles.new_exercise__content}>
-                <span className="label">Fen</span>
+                <span className="label">
+                  Fen{' '}
+                  <button
+                    type="button"
+                    onClick={openExternalLink}
+                    title="FEN sur Wikipédia"
+                    className={styles.new_exercise__info}
+                  >
+                    ?
+                  </button>
+                </span>
                 <input
                   type="text"
                   id="fen"

@@ -1,4 +1,5 @@
 .exercises_list {
+  width: 100vw;
   max-width: 1633px;
   margin: 0 auto;
   display: grid;
@@ -121,6 +122,7 @@
   padding: 1rem 3rem;
   display: flex;
   align-items: center;
+  width: 100vw;
 
   svg {
     fill: #fff;

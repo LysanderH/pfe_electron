@@ -28,6 +28,11 @@
     flex-direction: column;
     margin-bottom: 1.2rem;
   }
+
+  &__error {
+    color: #DE3723;
+    font-size: 1rem;
+  }
 }
 
 .background {
